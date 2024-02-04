@@ -4,6 +4,9 @@ import Part from "./Part";
 const Course = ({ course }) => {
   const { name, parts } = course;
 
+  const totalExercises = () =>
+    parts.reduce((sum, part) => sum + part.exercises, 0);
+
   return (
     <div>
       <Header name={name} />
@@ -11,6 +14,7 @@ const Course = ({ course }) => {
         const id = part.id;
         return <Part key={id} part={part} />;
       })}
+      <strong>total of {totalExercises()} exercises</strong>
     </div>
   );
 };
