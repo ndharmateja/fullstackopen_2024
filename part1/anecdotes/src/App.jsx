@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AnecdoteSection from "./components/AnecdoteSection";
 
 const App = () => {
   const anecdotes = [
@@ -13,13 +14,38 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+
+  const incrementCurrentVote = () => {
+    const votesCopy = [...votes];
+    votesCopy[selected] += 1;
+    setVotes(votesCopy);
+  };
+
+  const getMaxVotesIndex = () => {
+    let maxIndex = 0;
+    for (const i in votes) {
+      if (votes[i] > votes[maxIndex]) maxIndex = i;
+    }
+    return maxIndex;
+  };
 
   return (
     <div>
-      <div>{anecdotes[selected]}</div>
+      <AnecdoteSection
+        title="Anecdote of the day"
+        anecdote={anecdotes[selected]}
+        votes={votes[selected]}
+      />
+      <button onClick={() => incrementCurrentVote()}>vote</button>
       <button onClick={() => setSelected((selected + 1) % anecdotes.length)}>
         next anecdote
       </button>
+      <AnecdoteSection
+        title="Anecdote with most votes"
+        anecdote={anecdotes[getMaxVotesIndex()]}
+        votes={votes[getMaxVotesIndex()]}
+      />
     </div>
   );
 };
