@@ -14,13 +14,19 @@ const Statistics = ({ good, neutral, bad }) => {
 
   return (
     <div>
-      <StatisticLine statistic="good" value={good} /> <br />
-      <StatisticLine statistic="neutral" value={neutral} /> <br />
-      <StatisticLine statistic="bad" value={bad} /> <br />
-      <StatisticLine statistic="total" value={total()} /> <br />
-      <StatisticLine statistic="average" value={average()} /> <br />
-      <StatisticLine statistic="positive" value={positivePercentage()} /> %{" "}
-      <br />
+      <table>
+        <tbody>
+          <StatisticLine statistic="good" value={good} />
+          <StatisticLine statistic="neutral" value={neutral} />
+          <StatisticLine statistic="bad" value={bad} />
+          <StatisticLine statistic="total" value={total()} />
+          <StatisticLine statistic="average" value={average()} />
+          <StatisticLine
+            statistic="positive"
+            value={`${positivePercentage()} %`}
+          />
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -1,8 +1,9 @@
 const StatisticLine = ({ statistic, value }) => {
   return (
-    <span>
-      {statistic} {value}
-    </span>
+    <tr>
+      <td>{statistic}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
