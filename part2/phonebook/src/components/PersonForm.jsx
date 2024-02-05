@@ -1,4 +1,4 @@
-const PhoneForm = ({
+const PersonForm = ({
   newName,
   handleNameChange,
   newPhone,
@@ -7,7 +7,6 @@ const PhoneForm = ({
 }) => {
   return (
     <div>
-      <h2>add a new</h2>
       <form onSubmit={handleSubmit}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -23,4 +22,4 @@ const PhoneForm = ({
   );
 };
 
-export default PhoneForm;
+export default PersonForm;
