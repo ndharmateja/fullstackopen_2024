@@ -7,6 +7,11 @@ const App = () => {
   const handleChange = (e) => setNewName(e.target.value);
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (persons.map((p) => p.name).includes(newName)) {
+      window.alert(`${newName} is already added to the phonebook`);
+      return;
+    }
+
     setPersons(persons.concat({ name: newName }));
     setNewName("");
   };
