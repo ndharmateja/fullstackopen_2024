@@ -18,6 +18,15 @@ const App = () => {
   const handlePhoneChange = (e) => setNewPhone(e.target.value);
   const handleSearchQueryChange = (e) => setNewSearchQuery(e.target.value);
 
+  const handleDelete = (person) => {
+    const { name, id } = person;
+    if (!window.confirm(`Delete ${name}?`)) return;
+
+    personsService
+      .remove(id)
+      .then(() => setPersons(persons.filter((p) => p.id !== id)));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (persons.map((p) => p.name).includes(newName)) {
@@ -58,7 +67,7 @@ const App = () => {
         handleSubmit={handleSubmit}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons()} />
+      <Persons handleDelete={handleDelete} persons={filteredPersons()} />
     </div>
   );
 };
