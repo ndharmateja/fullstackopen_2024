@@ -27,20 +27,48 @@ const App = () => {
       .then(() => setPersons(persons.filter((p) => p.id !== id)));
   };
 
+  const shouldUpdateOldNumber = (name) =>
+    window.confirm(
+      `${name} is already added to phonebook, replace the old number with a new one?`
+    );
+
+  const updatePersonsAndClear = (newPersons) => {
+    setPersons(newPersons);
+    setNewName("");
+    setNewPhone("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (persons.map((p) => p.name).includes(newName)) {
-      window.alert(`${newName} is already added to the phonebook`);
+
+    // see if a person object exists with the same name
+    const person = persons.find((p) => p.name === newName);
+
+    // if the new name already exists
+    // and the user confirms to replace, we replace it
+    if (person) {
+      if (!shouldUpdateOldNumber(newName)) {
+        return;
+      }
+
+      // If the new name already exists and the user confirms update
+      // we update the number
+      personsService
+        .update({ ...person, number: newPhone })
+        .then((updatedPerson) => {
+          const newPersons = persons.map((p) =>
+            p.id === updatedPerson.id ? updatedPerson : p
+          );
+          updatePersonsAndClear(newPersons);
+        });
       return;
     }
 
+    // if the new name doesn't exist
+    // we create a new entry
     personsService
       .create({ name: newName, number: newPhone })
-      .then((person) => {
-        setPersons(persons.concat(person));
-        setNewName("");
-        setNewPhone("");
-      });
+      .then((p) => updatePersonsAndClear(persons.concat(p)));
   };
 
   const filteredPersons = () => {
