@@ -27,11 +27,25 @@ const App = () => {
     const { name, id } = person;
     if (!window.confirm(`Delete ${name}?`)) return;
 
-    personsService.remove(id).then(() => {
-      setPersons(persons.filter((p) => p.id !== id));
-      showNotification(`Deleted ${name}`, false, 5000);
-    });
+    personsService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter((p) => p.id !== id));
+        showNotification(`Deleted ${name}`, false, 5000);
+      })
+      .catch(() => {
+        // Remove this person from the list of persons
+        removePersonFromDisplay(id);
+        showNotification(
+          `Information of ${name} has already been removed from server`,
+          true,
+          5000
+        );
+      });
   };
+
+  const removePersonFromDisplay = (id) =>
+    setPersons(persons.filter((p) => p.id !== id));
 
   const shouldUpdateOldNumber = (name) =>
     window.confirm(
@@ -67,6 +81,15 @@ const App = () => {
           );
           updatePersonsAndClear(newPersons);
           showNotification(`Updated ${newName}`, false, 5000);
+        })
+        .catch(() => {
+          // Remove this person from the list of persons
+          removePersonFromDisplay(person.id);
+          showNotification(
+            `Information of ${newName} has already been removed from server`,
+            true,
+            5000
+          );
         });
       return;
     }
