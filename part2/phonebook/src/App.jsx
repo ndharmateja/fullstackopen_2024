@@ -3,12 +3,17 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import personsService from "./services/persons";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [searchQuery, setNewSearchQuery] = useState("");
+  const [notification, setNotification] = useState({
+    message: null,
+    isError: false,
+  });
 
   useEffect(() => {
     personsService.getAll().then((persons) => setPersons(persons));
@@ -22,9 +27,10 @@ const App = () => {
     const { name, id } = person;
     if (!window.confirm(`Delete ${name}?`)) return;
 
-    personsService
-      .remove(id)
-      .then(() => setPersons(persons.filter((p) => p.id !== id)));
+    personsService.remove(id).then(() => {
+      setPersons(persons.filter((p) => p.id !== id));
+      showNotification(`Deleted ${name}`, false, 5000);
+    });
   };
 
   const shouldUpdateOldNumber = (name) =>
@@ -60,15 +66,17 @@ const App = () => {
             p.id === updatedPerson.id ? updatedPerson : p
           );
           updatePersonsAndClear(newPersons);
+          showNotification(`Updated ${newName}`, false, 5000);
         });
       return;
     }
 
     // if the new name doesn't exist
     // we create a new entry
-    personsService
-      .create({ name: newName, number: newPhone })
-      .then((p) => updatePersonsAndClear(persons.concat(p)));
+    personsService.create({ name: newName, number: newPhone }).then((p) => {
+      updatePersonsAndClear(persons.concat(p));
+      showNotification(`Added ${newName}`, false, 5000);
+    });
   };
 
   const filteredPersons = () => {
@@ -79,9 +87,23 @@ const App = () => {
     );
   };
 
+  const showNotification = (message, isError, duration) => {
+    setNotification({ message, isError });
+    setTimeout(() => {
+      clearNotification();
+    }, duration);
+  };
+
+  const clearNotification = () =>
+    setNotification({ ...notification, message: null });
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        message={notification.message}
+        isError={notification.isError}
+      />
       <Filter
         searchQuery={searchQuery}
         handleSearchQueryChange={handleSearchQueryChange}
