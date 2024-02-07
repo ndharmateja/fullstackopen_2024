@@ -1,6 +1,6 @@
 import CountryInfo from "./CountryInfo";
 
-const Body = ({ searchQuery, countryNames }) => {
+const Body = ({ searchQuery, countryNames, handleSelect }) => {
   if (searchQuery.length === 0)
     return <div>Start typing a country name...</div>;
 
@@ -10,9 +10,10 @@ const Body = ({ searchQuery, countryNames }) => {
   if (countryNames.length > 1)
     return (
       <div>
-        {countryNames.map((c) => (
-          <div key={c}>
-            {c}
+        {countryNames.map((name) => (
+          <div key={name}>
+            {`${name} `}
+            <button onClick={() => handleSelect(name)}>show</button>
             <br />
           </div>
         ))}

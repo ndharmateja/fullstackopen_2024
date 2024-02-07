@@ -6,7 +6,7 @@ import WeatherInfo from "./WeatherInfo";
 
 const CountryInfo = ({ countryName }) => {
   const [countryInfo, setCountryInfo] = useState(null);
-  const [weatherInfo, setWeatherInfo] = useState(null);
+  const [weather, setWeather] = useState({ info: null, error: false });
 
   useEffect(() => {
     countriesService.getOneCountry(countryName).then((c) => {
@@ -14,22 +14,27 @@ const CountryInfo = ({ countryName }) => {
       const {
         capital: [capital],
       } = c;
-      weatherService.getWeather(capital).then((w) => setWeatherInfo(w));
+      weatherService
+        .getWeather(capital)
+        .then((w) => setWeather({ info: w, error: false }))
+        .catch(() => setWeather({ info: null, error: true }));
     });
   }, [countryName]);
 
   return (
     <div>
       {countryInfo === null ? (
-        <div>Geographical info loading...</div>
+        <h3>Geographical info loading...</h3>
       ) : (
         <GeographicInfo countryInfo={countryInfo} />
       )}
 
-      {weatherInfo === null ? (
-        <div>Weather info loading...</div>
+      {weather.error ? (
+        <h3>No weather data available.</h3>
+      ) : weather.info === null ? (
+        <h3>Weather info loading...</h3>
       ) : (
-        <WeatherInfo weatherInfo={weatherInfo} />
+        <WeatherInfo weatherInfo={weather.info} />
       )}
     </div>
   );
