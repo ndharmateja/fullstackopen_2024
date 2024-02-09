@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/api/persons";
+const baseUrl = "https://phonebook-backend-qw61.onrender.com/api/persons";
 
 const create = (person) =>
   axios.post(baseUrl, person).then((response) => response.data);
