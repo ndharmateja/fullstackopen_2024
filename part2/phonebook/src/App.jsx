@@ -82,15 +82,14 @@ const App = () => {
           updatePersonsAndClear(newPersons);
           showNotification(`Updated ${newName}`, false, 5000);
         })
-        .catch((e) => {
-          console.log(e);
+        .catch(() => {
           // Remove this person from the list of persons
-          // removePersonFromDisplay(person.id);
-          // showNotification(
-          //   `Information of ${newName} has already been removed from server`,
-          //   true,
-          //   5000
-          // );
+          removePersonFromDisplay(person.id);
+          showNotification(
+            `Information of ${newName} has already been removed from server`,
+            true,
+            5000
+          );
         });
       return;
     }
