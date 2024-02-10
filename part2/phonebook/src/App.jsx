@@ -82,24 +82,31 @@ const App = () => {
           updatePersonsAndClear(newPersons);
           showNotification(`Updated ${newName}`, false, 5000);
         })
-        .catch(() => {
+        .catch((e) => {
+          console.log(e);
           // Remove this person from the list of persons
-          removePersonFromDisplay(person.id);
-          showNotification(
-            `Information of ${newName} has already been removed from server`,
-            true,
-            5000
-          );
+          // removePersonFromDisplay(person.id);
+          // showNotification(
+          //   `Information of ${newName} has already been removed from server`,
+          //   true,
+          //   5000
+          // );
         });
       return;
     }
 
     // if the new name doesn't exist
     // we create a new entry
-    personsService.create({ name: newName, number: newPhone }).then((p) => {
-      updatePersonsAndClear(persons.concat(p));
-      showNotification(`Added ${newName}`, false, 5000);
-    });
+    personsService
+      .create({ name: newName, number: newPhone })
+      .then((p) => {
+        updatePersonsAndClear(persons.concat(p));
+        showNotification(`Added ${newName}`, false, 5000);
+      })
+      .catch((e) => {
+        console.log(e.response.data.error);
+        showNotification(e.response.data.error, true, 5000);
+      });
   };
 
   const filteredPersons = () => {
