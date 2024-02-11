@@ -8,6 +8,7 @@ const logger = require("./utils/logger");
 const mw = require("./utils/middleware");
 
 // Connect to Mongo DB
+mongoose.set("strictQuery", false);
 const mongoUrl = process.env.MONGODB_URI;
 logger.info("Connecting to Mongo DB..");
 mongoose
