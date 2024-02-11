@@ -1,4 +1,5 @@
 const morgan = require("morgan");
+const logger = require("./logger");
 
 const notFoundRoute = (req, res) =>
     res
@@ -19,7 +20,7 @@ const requestLogger = morgan((tokens, req, res) => {
 });
 
 const errorHandler = (error, _req, res, next) => {
-    console.log(error);
+    logger.info(error);
 
     if (error.name === "CastError") {
         return res.status(400).json({ error: "malformed id" });
