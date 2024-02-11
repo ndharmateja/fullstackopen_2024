@@ -2,3 +2,14 @@
 
 ###
 GET {{baseUrl}}/api/blogs
+
+###
+POST {{baseUrl}}/api/blogs
+Content-Type: application/json
+
+{
+    "title":"The race to extinction",
+    "author":"Elon Musk",
+    "url":"https://tesla.com",
+    "likes":33
+}
