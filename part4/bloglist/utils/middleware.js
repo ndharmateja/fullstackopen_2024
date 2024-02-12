@@ -1,23 +1,17 @@
-const morgan = require("morgan");
 const logger = require("./logger");
 
-const notFoundRoute = (req, res) =>
+const notFoundRoute = (_req, res) =>
     res
         .status(404)
         .send('<h1>Unknown endpoint</h1><p>Go to <a href="/info">info</a></p>');
 
-const requestLogger = morgan((tokens, req, res) => {
-    return [
-        tokens.method(req, res),
-        tokens.url(req, res),
-        tokens.status(req, res),
-        tokens.res(req, res, "content-length"),
-        "-",
-        tokens["response-time"](req, res),
-        "ms",
-        JSON.stringify(req.body),
-    ].join(" ");
-});
+const requestLogger = (req, _res, next) => {
+    logger.info("Method:", req.method);
+    logger.info("Path:  ", req.path);
+    logger.info("Body:  ", req.body);
+    logger.info("---");
+    next();
+};
 
 const errorHandler = (error, _req, res, next) => {
     logger.info(error);
