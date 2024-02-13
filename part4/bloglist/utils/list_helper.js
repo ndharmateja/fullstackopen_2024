@@ -1,3 +1,5 @@
+const logger = require("./logger");
+
 const dummy = (_blogs) => 1;
 
 const totalLikes = (blogs) =>
@@ -11,4 +13,25 @@ const favoriteBlog = (blogs) =>
         return !favBlog || currBlog.likes > favBlog.likes ? currBlog : favBlog;
     }, undefined);
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+const mostBlogs = (blogs) => {
+    const authorBlogCounts = blogs.reduce((counts, currBlog) => {
+        const currAuthor = currBlog.author;
+        return {
+            ...counts,
+            [currAuthor]: ([currAuthor] in counts ? counts[currAuthor] : 0) + 1,
+        };
+    }, {});
+
+    return Object.entries(authorBlogCounts).reduce(
+        (maxCount, currAuthorCount) => {
+            // maxCount format: undefined or {"author": "author name", "blogs": 3}
+            // currAuthorCount format: ["author name", 3]
+            const [author, blogs] = currAuthorCount;
+            if (!maxCount || blogs > maxCount.blogs) return { author, blogs };
+            return maxCount;
+        },
+        undefined
+    );
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
