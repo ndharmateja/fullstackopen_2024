@@ -34,4 +34,27 @@ const mostBlogs = (blogs) => {
     );
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
+const mostLikes = (blogs) => {
+    const authorLikeCounts = blogs.reduce((counts, currBlog) => {
+        const currAuthor = currBlog.author;
+        const currLikes = currBlog.likes;
+        return {
+            ...counts,
+            [currAuthor]:
+                ([currAuthor] in counts ? counts[currAuthor] : 0) + currLikes,
+        };
+    }, {});
+
+    return Object.entries(authorLikeCounts).reduce(
+        (maxCount, currAuthorCount) => {
+            // maxCount format: undefined or {"author": "author name", "likes": 3}
+            // currAuthorCount format: ["author name", 3]
+            const [author, likes] = currAuthorCount;
+            if (!maxCount || likes > maxCount.likes) return { author, likes };
+            return maxCount;
+        },
+        undefined
+    );
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
