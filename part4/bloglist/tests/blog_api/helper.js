@@ -46,9 +46,17 @@ const initialBlogs = [
     },
 ];
 
+const nonExistingId = async () => {
+    const note = new Blog(singleBlog);
+    await note.save();
+    await note.deleteOne();
+
+    return note._id.toString();
+};
+
 const blogsInDb = async () => {
     const blogs = await Blog.find({});
     return blogs.map((b) => b.toJSON());
 };
 
-module.exports = { singleBlog, initialBlogs, blogsInDb };
+module.exports = { singleBlog, initialBlogs, nonExistingId, blogsInDb };
