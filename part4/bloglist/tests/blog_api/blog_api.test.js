@@ -105,6 +105,22 @@ describe("test POST /api/blogs", () => {
     });
 });
 
+describe("test DELETE /api/blogs/:id", () => {
+    test("check delete blog", async () => {
+        const blogs = await allBlogsInDb();
+        const blogIdToDelete = blogs[0].id;
+        await api.delete(`/api/blogs/${blogIdToDelete}`).expect(204);
+
+        const blogsAfter = await allBlogsInDb();
+        expect(blogsAfter.length).toBe(multipleBlogs.length - 1);
+        expect(blogsAfter.map((blog) => blog.id)).not.toContain(blogIdToDelete);
+    });
+
+    test("check random id", async () => {
+        await api.delete("/api/blogs/asldkhg").expect(400);
+    });
+});
+
 afterAll(async () => {
     await mongoose.connection.close();
 });

@@ -16,4 +16,10 @@ const createBlog = async (req, res) => {
     return res.status(201).json(result);
 };
 
-module.exports = { getAllBlogs, createBlog };
+const deleteBlog = async (req, res) => {
+    const id = req.params.id;
+    await Blog.findByIdAndDelete(id);
+    return res.status(204).end();
+};
+
+module.exports = { getAllBlogs, createBlog, deleteBlog };
