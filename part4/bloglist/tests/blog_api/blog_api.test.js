@@ -84,10 +84,14 @@ describe("test POST /api/blogs", () => {
         const singleBlogWithoutTitle = { ...singleBlog };
         delete singleBlogWithoutTitle.title;
         await api.post("/api/blogs").send(singleBlogWithoutTitle).expect(400);
+        let blogsInDb = await allBlogsInDb();
+        expect(blogsInDb).toHaveLength(multipleBlogs.length);
 
         const singleBlogWithoutUrl = { ...singleBlog };
         delete singleBlogWithoutUrl.url;
         await api.post("/api/blogs").send(singleBlogWithoutUrl).expect(400);
+        blogsInDb = await allBlogsInDb();
+        expect(blogsInDb).toHaveLength(multipleBlogs.length);
 
         const singleBlogWithoutUrlAndTitle = { ...singleBlog };
         delete singleBlogWithoutUrlAndTitle.url;
@@ -96,6 +100,8 @@ describe("test POST /api/blogs", () => {
             .post("/api/blogs")
             .send(singleBlogWithoutUrlAndTitle)
             .expect(400);
+        blogsInDb = await allBlogsInDb();
+        expect(blogsInDb).toHaveLength(multipleBlogs.length);
     });
 });
 
