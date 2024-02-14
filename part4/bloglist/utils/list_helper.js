@@ -1,5 +1,3 @@
-const logger = require("./logger");
-
 const dummy = (_blogs) => 1;
 
 const totalLikes = (blogs) =>
