@@ -136,6 +136,37 @@ describe("test GET /api/blogs/:id", () => {
     });
 });
 
+describe("test PUT /api/blogs/:id", () => {
+    test("check update blog", async () => {
+        const blogs = await blogsInDb();
+        const blogToUpdate = blogs[0];
+        const likes = 12345;
+        const url = "new_url";
+        const response = await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send({ likes, url })
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+        expect(response.body.likes).toBe(likes);
+        expect(response.body.url).toBe(url);
+
+        const blogsAfter = await blogsInDb();
+        expect(blogsAfter.length).toBe(initialBlogs.length);
+
+        const updatedBlog = blogsAfter.find(
+            (blog) => blog.id === blogToUpdate.id
+        );
+        expect(updatedBlog.likes).toBe(likes);
+        expect(updatedBlog.url).toBe(url);
+        expect(updatedBlog.title).toBe(blogToUpdate.title);
+        expect(updatedBlog.author).toBe(blogToUpdate.author);
+    });
+
+    test("check invalid id", async () => {
+        await api.put("/api/blogs/alsdkhg").expect(400);
+    });
+});
+
 describe("test DELETE /api/blogs/:id", () => {
     test("check delete blog", async () => {
         const blogs = await blogsInDb();

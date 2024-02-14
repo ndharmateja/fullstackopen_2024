@@ -24,10 +24,32 @@ const getOneBlog = async (req, res) => {
     else return res.status(404).end();
 };
 
+const updateBlog = async (req, res) => {
+    const { id } = req.params;
+    const body = req.body;
+    const blog = {
+        likes: body.likes,
+        url: body.url,
+        title: body.title,
+        author: body.author,
+    };
+    const updatedBlog = await Blog.findByIdAndUpdate(id, blog, {
+        new: true,
+        runValidators: true,
+    });
+    return res.json(updatedBlog);
+};
+
 const deleteBlog = async (req, res) => {
     const id = req.params.id;
     await Blog.findByIdAndDelete(id);
     return res.status(204).end();
 };
 
-module.exports = { getAllBlogs, createBlog, getOneBlog, deleteBlog };
+module.exports = {
+    getAllBlogs,
+    createBlog,
+    getOneBlog,
+    updateBlog,
+    deleteBlog,
+};
