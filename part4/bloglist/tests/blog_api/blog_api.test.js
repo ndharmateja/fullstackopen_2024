@@ -2,7 +2,12 @@ const supertest = require("supertest");
 const app = require("../../app");
 const mongoose = require("mongoose");
 const Blog = require("../../models/Blog");
-const { initialBlogs, singleBlog, blogsInDb } = require("./helper");
+const {
+    initialBlogs,
+    singleBlog,
+    blogsInDb,
+    nonExistingId,
+} = require("./helper");
 
 const api = supertest(app);
 
@@ -102,6 +107,32 @@ describe("test POST /api/blogs", () => {
             .expect(400);
         currBlogsInDb = await blogsInDb();
         expect(currBlogsInDb).toHaveLength(initialBlogs.length);
+    });
+});
+
+describe("test GET /api/blogs/:id", () => {
+    test("check get existing blog", async () => {
+        const blogsBefore = await blogsInDb();
+        const firstBlog = blogsBefore[0];
+
+        const { body: blog } = await api
+            .get(`/api/blogs/${firstBlog.id}`)
+            .expect(200)
+            .expect("Content-Type", /application\/json/);
+
+        expect(blog).toEqual(firstBlog);
+
+        const blogsAfter = await blogsInDb();
+        expect(blogsAfter).toHaveLength(blogsBefore.length);
+    });
+
+    test("check non-existent id", async () => {
+        const id = await nonExistingId();
+        await api.get(`/api/blogs/${id}`).expect(404);
+    });
+
+    test("check invalid id", async () => {
+        await api.get("/api/blogs/alsdkhg").expect(400);
     });
 });
 
