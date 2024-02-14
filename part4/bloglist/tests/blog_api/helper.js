@@ -1,3 +1,12 @@
+const Blog = require("../../models/Blog");
+
+const singleBlog = {
+    title: "The future is now",
+    author: "Jerry Seinfeld",
+    url: "https://jerrylaughs.com/",
+    likes: 17,
+};
+
 const multipleBlogs = [
     {
         title: "React patterns",
@@ -32,4 +41,8 @@ const multipleBlogs = [
     },
 ];
 
-module.exports = { multipleBlogs };
+const allBlogsInDb = async () => {
+    return Blog.find({});
+};
+
+module.exports = { singleBlog, multipleBlogs, allBlogsInDb };
