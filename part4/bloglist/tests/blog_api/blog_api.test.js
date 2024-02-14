@@ -63,7 +63,7 @@ test("check new post is added", async () => {
     ).toContainEqual(singleBlog);
 });
 
-test("check likes property is 0 if missing", async () => {
+test("check missing likes", async () => {
     const singleBlogWithoutLikes = { ...singleBlog };
     delete singleBlogWithoutLikes.likes;
 
@@ -75,6 +75,21 @@ test("check likes property is 0 if missing", async () => {
 
     expect(newBlog.likes).toBeDefined();
     expect(newBlog.likes).toBe(0);
+});
+
+test("check missing title / url", async () => {
+    const singleBlogWithoutTitle = { ...singleBlog };
+    delete singleBlogWithoutTitle.title;
+    await api.post("/api/blogs").send(singleBlogWithoutTitle).expect(400);
+
+    const singleBlogWithoutUrl = { ...singleBlog };
+    delete singleBlogWithoutUrl.url;
+    await api.post("/api/blogs").send(singleBlogWithoutUrl).expect(400);
+
+    const singleBlogWithoutUrlAndTitle = { ...singleBlog };
+    delete singleBlogWithoutUrlAndTitle.url;
+    delete singleBlogWithoutUrlAndTitle.title;
+    await api.post("/api/blogs").send(singleBlogWithoutUrlAndTitle).expect(400);
 });
 
 afterAll(async () => {
