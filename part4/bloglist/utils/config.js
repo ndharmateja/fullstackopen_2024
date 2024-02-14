@@ -17,4 +17,5 @@ const MONGODB_URI = isTest()
 module.exports = {
     PORT,
     MONGODB_URI,
+    isTest,
 };
