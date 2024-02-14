@@ -28,6 +28,13 @@ test("number of blogs returned", async () => {
     expect(blogs).toHaveLength(multipleBlogs.length);
 });
 
+test("check id is defined in blogs", async () => {
+    const { body: blogs } = await api.get("/api/blogs");
+    for (const blog of blogs) {
+        expect(blog.id).toBeDefined();
+    }
+});
+
 afterAll(async () => {
     await mongoose.connection.close();
 });
