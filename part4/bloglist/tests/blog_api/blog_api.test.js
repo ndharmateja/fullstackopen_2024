@@ -63,6 +63,20 @@ test("check new post is added", async () => {
     ).toContainEqual(singleBlog);
 });
 
+test("check likes property is 0 if missing", async () => {
+    const singleBlogWithoutLikes = { ...singleBlog };
+    delete singleBlogWithoutLikes.likes;
+
+    const { body: newBlog } = await api
+        .post("/api/blogs")
+        .send(singleBlogWithoutLikes)
+        .expect(201)
+        .expect("Content-Type", /application\/json/);
+
+    expect(newBlog.likes).toBeDefined();
+    expect(newBlog.likes).toBe(0);
+});
+
 afterAll(async () => {
     await mongoose.connection.close();
 });
