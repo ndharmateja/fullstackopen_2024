@@ -6,10 +6,11 @@ const blogsRouter = require("./routes/blogs");
 require("dotenv").config();
 const logger = require("./utils/logger");
 const mw = require("./utils/middleware");
+const config = require("./utils/config");
 
 // Connect to Mongo DB
 mongoose.set("strictQuery", false);
-const mongoUrl = process.env.MONGODB_URI;
+const mongoUrl = config.MONGODB_URI;
 logger.info("Connecting to Mongo DB..");
 mongoose
     .connect(mongoUrl)
