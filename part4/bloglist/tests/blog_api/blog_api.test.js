@@ -24,8 +24,8 @@ test("blogs are returned as json", async () => {
 });
 
 test("number of blogs returned", async () => {
-    const blogs = await api.get("/api/blogs");
-    expect(blogs.body).toHaveLength(multipleBlogs.length);
+    const { body: blogs } = await api.get("/api/blogs");
+    expect(blogs).toHaveLength(multipleBlogs.length);
 });
 
 afterAll(async () => {
