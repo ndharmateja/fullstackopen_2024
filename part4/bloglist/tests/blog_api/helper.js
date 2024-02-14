@@ -7,7 +7,7 @@ const singleBlog = {
     likes: 17,
 };
 
-const multipleBlogs = [
+const initialBlogs = [
     {
         title: "React patterns",
         author: "Michael Chan",
@@ -46,9 +46,9 @@ const multipleBlogs = [
     },
 ];
 
-const allBlogsInDb = async () => {
+const blogsInDb = async () => {
     const blogs = await Blog.find({});
     return blogs.map((b) => b.toJSON());
 };
 
-module.exports = { singleBlog, multipleBlogs, allBlogsInDb };
+module.exports = { singleBlog, initialBlogs, blogsInDb };

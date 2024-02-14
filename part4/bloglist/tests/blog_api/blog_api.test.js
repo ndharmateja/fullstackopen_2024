@@ -2,7 +2,7 @@ const supertest = require("supertest");
 const app = require("../../app");
 const mongoose = require("mongoose");
 const Blog = require("../../models/Blog");
-const { multipleBlogs, singleBlog, allBlogsInDb } = require("./helper");
+const { initialBlogs, singleBlog, blogsInDb } = require("./helper");
 
 const api = supertest(app);
 
@@ -11,7 +11,7 @@ beforeEach(async () => {
     await Blog.deleteMany({});
 
     // Add all blogs
-    const blogObjects = multipleBlogs.map((b) => new Blog(b));
+    const blogObjects = initialBlogs.map((b) => new Blog(b));
     const promises = blogObjects.map((b) => b.save());
     await Promise.all(promises);
 });
@@ -26,7 +26,7 @@ describe("test GET /api/blogs", () => {
 
     test("check number of blogs returned", async () => {
         const { body: blogs } = await api.get("/api/blogs");
-        expect(blogs).toHaveLength(multipleBlogs.length);
+        expect(blogs).toHaveLength(initialBlogs.length);
     });
 
     test("check if id is defined in blogs", async () => {
@@ -51,11 +51,11 @@ describe("test POST /api/blogs", () => {
         expect(newBlog.likes).toBe(singleBlog.likes);
         expect(newBlog.id).toBeDefined();
 
-        const blogsInDb = await allBlogsInDb();
+        const currBlogsInDb = await blogsInDb();
 
-        expect(blogsInDb).toHaveLength(multipleBlogs.length + 1);
+        expect(currBlogsInDb).toHaveLength(initialBlogs.length + 1);
         expect(
-            blogsInDb.map(({ author, title, url, likes }) => {
+            currBlogsInDb.map(({ author, title, url, likes }) => {
                 return {
                     author,
                     title,
@@ -84,14 +84,14 @@ describe("test POST /api/blogs", () => {
         const singleBlogWithoutTitle = { ...singleBlog };
         delete singleBlogWithoutTitle.title;
         await api.post("/api/blogs").send(singleBlogWithoutTitle).expect(400);
-        let blogsInDb = await allBlogsInDb();
-        expect(blogsInDb).toHaveLength(multipleBlogs.length);
+        let currBlogsInDb = await blogsInDb();
+        expect(currBlogsInDb).toHaveLength(initialBlogs.length);
 
         const singleBlogWithoutUrl = { ...singleBlog };
         delete singleBlogWithoutUrl.url;
         await api.post("/api/blogs").send(singleBlogWithoutUrl).expect(400);
-        blogsInDb = await allBlogsInDb();
-        expect(blogsInDb).toHaveLength(multipleBlogs.length);
+        currBlogsInDb = await blogsInDb();
+        expect(currBlogsInDb).toHaveLength(initialBlogs.length);
 
         const singleBlogWithoutUrlAndTitle = { ...singleBlog };
         delete singleBlogWithoutUrlAndTitle.url;
@@ -100,19 +100,19 @@ describe("test POST /api/blogs", () => {
             .post("/api/blogs")
             .send(singleBlogWithoutUrlAndTitle)
             .expect(400);
-        blogsInDb = await allBlogsInDb();
-        expect(blogsInDb).toHaveLength(multipleBlogs.length);
+        currBlogsInDb = await blogsInDb();
+        expect(currBlogsInDb).toHaveLength(initialBlogs.length);
     });
 });
 
 describe("test DELETE /api/blogs/:id", () => {
     test("check delete blog", async () => {
-        const blogs = await allBlogsInDb();
+        const blogs = await blogsInDb();
         const blogIdToDelete = blogs[0].id;
         await api.delete(`/api/blogs/${blogIdToDelete}`).expect(204);
 
-        const blogsAfter = await allBlogsInDb();
-        expect(blogsAfter.length).toBe(multipleBlogs.length - 1);
+        const blogsAfter = await blogsInDb();
+        expect(blogsAfter.length).toBe(initialBlogs.length - 1);
         expect(blogsAfter.map((blog) => blog.id)).not.toContain(blogIdToDelete);
     });
 
