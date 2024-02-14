@@ -2,7 +2,7 @@ const supertest = require("supertest");
 const app = require("../../app");
 const mongoose = require("mongoose");
 const Blog = require("../../models/Blog");
-const { multipleBlogs } = require("./helper");
+const { multipleBlogs, singleBlog, allBlogsInDb } = require("./helper");
 
 const api = supertest(app);
 
@@ -33,6 +33,34 @@ test("check id is defined in blogs", async () => {
     for (const blog of blogs) {
         expect(blog.id).toBeDefined();
     }
+});
+
+test("check new post is added", async () => {
+    const { body: newBlog } = await api
+        .post("/api/blogs")
+        .send(singleBlog)
+        .expect(201)
+        .expect("Content-Type", /application\/json/);
+
+    expect(newBlog.title).toBe(singleBlog.title);
+    expect(newBlog.suthor).toBe(singleBlog.suthor);
+    expect(newBlog.url).toBe(singleBlog.url);
+    expect(newBlog.likes).toBe(singleBlog.likes);
+    expect(newBlog.id).toBeDefined();
+
+    const blogsInDb = await allBlogsInDb();
+
+    expect(blogsInDb).toHaveLength(multipleBlogs.length + 1);
+    expect(
+        blogsInDb.map(({ author, title, url, likes }) => {
+            return {
+                author,
+                title,
+                url,
+                likes,
+            };
+        })
+    ).toContainEqual(singleBlog);
 });
 
 afterAll(async () => {
