@@ -29,6 +29,16 @@ Content-Type: application/json
     "name": "Bindu Hegde"
 }
 
+###
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+    "username": "dharma",
+    "password": "sekret",
+    "name": "Dharma Teja Nuli"
+}
+
 ### Login
 ###
 POST {{baseUrl}}/api/login
