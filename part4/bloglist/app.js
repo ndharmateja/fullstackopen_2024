@@ -8,6 +8,7 @@ require("dotenv").config();
 const logger = require("./utils/logger");
 const mw = require("./utils/middleware");
 const config = require("./utils/config");
+const usersRouter = require("./routes/users");
 
 // Connect to Mongo DB
 mongoose.set("strictQuery", false);
@@ -28,6 +29,7 @@ app.use(express.static("dist"));
 
 // Routes
 app.use("/api/blogs", blogsRouter);
+app.use("/api/users", usersRouter);
 
 // Not found route and error handler middleware
 app.use(mw.notFoundRoute);
