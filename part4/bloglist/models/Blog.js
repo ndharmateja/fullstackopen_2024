@@ -11,7 +11,9 @@ const blogSchema = new mongoose.Schema({
         required: true,
     },
     likes: Number,
+    user: mongoose.Schema.Types.ObjectId,
 });
+
 blogSchema.set("toJSON", {
     transform: (_doc, ret) => {
         ret.id = ret._id.toString();
