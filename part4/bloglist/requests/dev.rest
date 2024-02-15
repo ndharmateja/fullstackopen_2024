@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3001
 
+### Blogs
 ###
 GET {{baseUrl}}/api/blogs
 
@@ -26,4 +27,14 @@ Content-Type: application/json
     "username": "hegde",
     "password": "top sekret",
     "name": "Bindu Hegde"
+}
+
+### Login
+###
+POST {{baseUrl}}/api/login
+Content-Type: application/json
+
+{
+    "username": "dharma",
+    "password": "secret"
 }
