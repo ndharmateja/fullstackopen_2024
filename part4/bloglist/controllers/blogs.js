@@ -1,4 +1,5 @@
 const Blog = require("../models/Blog");
+const User = require("../models/User");
 
 const getAllBlogs = async (_req, res) => {
     const blogs = await Blog.find({});
@@ -11,8 +12,19 @@ const createBlog = async (req, res) => {
     // likes should default to 0 if missing in req
     if (!blogData.likes) blogData.likes = 0;
 
+    // Get a random user from the DB
+    const user = await User.findOne({});
+    console.log("User", user);
+
+    // Add user to blog and create blog
+    blogData.user = user.id;
     const blog = new Blog(blogData);
     const result = await blog.save();
+
+    // Add blog id to user and save user
+    user.blogs = user.blogs.concat(result.id);
+    await user.save();
+
     return res.status(201).json(result);
 };
 
