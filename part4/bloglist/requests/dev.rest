@@ -13,3 +13,17 @@ Content-Type: application/json
     "url":"https://tesla.com",
     "likes":33
 }
+
+### Users
+###
+GET {{baseUrl}}/api/users
+
+###
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+    "username": "hegde",
+    "password": "top sekret",
+    "name": "Bindu Hegde"
+}
