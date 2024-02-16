@@ -28,45 +28,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlZ
     "likes": 5
 }
 
-### Users
 ###
-GET {{baseUrl}}/api/users
-
-###
-POST {{baseUrl}}/api/users
-Content-Type: application/json
-
-{
-    "username": "hegde",
-    "password": "top sekret",
-    "name": "Bindu Hegde"
-}
-
-###
-POST {{baseUrl}}/api/users
-Content-Type: application/json
-
-{
-    "username": "dharma",
-    "password": "sekret",
-    "name": "Dharma Teja Nuli"
-}
-
-### Login
-###
-POST {{baseUrl}}/api/login
-Content-Type: application/json
-
-{
-    "username": "dharma",
-    "password": "sekret"
-}
-
-###
-POST {{baseUrl}}/api/login
-Content-Type: application/json
-
-{
-    "username": "hegde",
-    "password": "top sekret"
-}
+GET {{baseUrl}}/api/blogs/65ce69dc6569eb59b2aadecc
