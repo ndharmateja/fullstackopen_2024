@@ -42,7 +42,7 @@ const errorHandler = (error, _req, res, next) => {
 
     // Mongoose invalid id error
     if (error.name === "CastError")
-        return res.status(400).json({ error: "malformed `id`" });
+        return res.status(400).json({ error: "malformed id" });
 
     // Mongoose validation error
     if (error.name === "ValidationError")
@@ -54,7 +54,7 @@ const errorHandler = (error, _req, res, next) => {
 
     // Duplicate username error
     if (isUsernameDuplicate(error))
-        return res.status(400).json({ error: "`username` should be unique" });
+        return res.status(400).json({ error: "username must be unique" });
 
     // Internal app error
     if (error instanceof BlogAppError)
