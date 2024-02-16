@@ -1,3 +1,4 @@
+const BlogAppError = require("../errors/BlogAppError");
 const Blog = require("../models/Blog");
 const User = require("../models/User");
 
@@ -56,8 +57,28 @@ const updateBlog = async (req, res) => {
 };
 
 const deleteBlog = async (req, res) => {
-    const id = req.params.id;
-    await Blog.findByIdAndDelete(id);
+    // Get user id from req
+    const callerId = req.userId;
+
+    // Only users who created the blogs can delete them
+    const blogId = req.params.id;
+    const blog = await Blog.findById(blogId);
+
+    // If no such blog exists, exit
+    if (!blog) return res.status(204).end();
+
+    // If the user id of the blog doesn't match the blog's user, error
+    if (blog.user.toString() !== callerId)
+        throw new BlogAppError(401, "unauthorized to delete");
+
+    // Delete blog
+    await Blog.findByIdAndDelete(blogId);
+
+    // remove blog id from user doc
+    const user = await User.findById(callerId);
+    user.blogs = user.blogs.filter((b) => b !== blogId);
+    await user.save();
+
     return res.status(204).end();
 };
 
