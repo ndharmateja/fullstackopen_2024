@@ -1,8 +1,5 @@
-const jwt = require("jsonwebtoken");
 const Blog = require("../models/Blog");
 const User = require("../models/User");
-const config = require("../utils/config");
-const BlogAppError = require("../errors/BlogAppError");
 
 const getAllBlogs = async (_req, res) => {
     const blogs = await Blog.find({}).populate("user", {
@@ -13,21 +10,9 @@ const getAllBlogs = async (_req, res) => {
     return res.json(blogs);
 };
 
-const getTokenFrom = (req) => {
-    const authorization = req.get("authorization");
-    if (authorization && authorization.startsWith("Bearer ")) {
-        return authorization.replace("Bearer ", "");
-    }
-    return null;
-};
-
 const createBlog = async (req, res) => {
-    // Authorize req
-    const token = getTokenFrom(req);
-    if (!token) throw new BlogAppError(401, "invalid or missing token");
-
-    // Get user id from token and get user
-    const { id: userId } = jwt.verify(token, config.SECRET);
+    // Get user id from req
+    const userId = req.userId;
     const user = await User.findById(userId);
 
     // get blog data and likes should default to 0 if missing in req
