@@ -1,5 +1,24 @@
+const jwt = require("jsonwebtoken");
 const logger = require("./logger");
 const BlogAppError = require("../errors/BlogAppError");
+const config = require("./config");
+
+const userExtractor = (req, _res, next) => {
+    // Check if bearer token exists
+    const authorization = req.get("authorization");
+    if (!authorization || !authorization.toLowerCase().startsWith("bearer ")) {
+        throw new BlogAppError(401, "missing token");
+    }
+
+    // Verify token
+    const token = authorization.substring(7);
+    const { id: userId } = jwt.verify(token, config.SECRET);
+
+    // Add id of caller to the req object
+    req.userId = userId;
+
+    next();
+};
 
 const notFoundRoute = (_req, res) =>
     res
@@ -29,6 +48,10 @@ const errorHandler = (error, _req, res, next) => {
     if (error.name === "ValidationError")
         return res.status(400).json({ error: error.message });
 
+    // Json web token error
+    if (error.name === "JsonWebTokenError")
+        return res.status(401).json({ error: "invalid token" });
+
     // Duplicate username error
     if (isUsernameDuplicate(error))
         return res.status(400).json({ error: "`username` should be unique" });
@@ -40,4 +63,4 @@ const errorHandler = (error, _req, res, next) => {
     next(error);
 };
 
-module.exports = { notFoundRoute, requestLogger, errorHandler };
+module.exports = { userExtractor, notFoundRoute, requestLogger, errorHandler };
