@@ -5,7 +5,6 @@ const LoginForm = ({ login }) => {
     const [password, setPassword] = useState("");
 
     const handleSubmit = async (e) => {
-        console.log(e);
         e.preventDefault();
         try {
             await login(username, password);
