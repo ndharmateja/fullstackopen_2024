@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
 import Blogs from "./components/Blogs";
@@ -6,6 +6,7 @@ import { BLOG_APP_USER } from "./constants";
 import Header from "./components/Header";
 import CreateBlogForm from "./components/CreateBlogForm";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
@@ -14,6 +15,7 @@ const App = () => {
         message: null,
         isError: false,
     });
+    const togglableRef = useRef();
 
     useEffect(() => {
         blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -67,7 +69,9 @@ const App = () => {
 
         try {
             const newBlog = await blogService.createBlog(title, author, url);
+            // show notification and toggle form visibility and add blog to state
             showNotification(`a new blog "${title}" by "${author}" added`);
+            togglableRef.current.toggleVisibility();
             setBlogs([...blogs, newBlog]);
         } catch (error) {
             showNotification(error.response.data.error, true);
@@ -88,7 +92,9 @@ const App = () => {
             ) : (
                 <div>
                     <Header name={user.name} onLogoutClick={handleLogout} />
-                    <CreateBlogForm createBlog={createBlog} />
+                    <Togglable buttonLabel="new blog" ref={togglableRef}>
+                        <CreateBlogForm createBlog={createBlog} />
+                    </Togglable>
                     <Blogs blogs={blogs} />
                 </div>
             )}
