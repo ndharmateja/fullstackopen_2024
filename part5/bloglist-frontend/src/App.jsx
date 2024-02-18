@@ -17,7 +17,9 @@ const App = () => {
     useEffect(() => {
         const userString = window.localStorage.getItem(BLOG_APP_USER);
         if (userString) {
-            setUser(JSON.parse(userString));
+            const parsedUser = JSON.parse(userString);
+            setUser(parsedUser);
+            blogService.setToken(parsedUser.token);
         }
     }, []);
 
@@ -31,7 +33,19 @@ const App = () => {
 
     const handleLogout = () => {
         window.localStorage.removeItem(BLOG_APP_USER);
+        blogService.setToken(null);
         setUser(null);
+    };
+
+    const createBlog = async (title, author, url) => {
+        if (!title || !author || !url) return;
+
+        try {
+            const newBlog = await blogService.createBlog(title, author, url);
+            setBlogs([...blogs, newBlog]);
+        } catch (error) {
+            // set notification
+        }
     };
 
     return (
@@ -41,7 +55,7 @@ const App = () => {
             ) : (
                 <div>
                     <Header name={user.name} onLogoutClick={handleLogout} />
-                    <CreateBlogForm />
+                    <CreateBlogForm createBlog={createBlog} />
                     <Blogs blogs={blogs} />
                 </div>
             )}
