@@ -24,7 +24,6 @@ const createBlog = async (title, author, url) => {
         config
     );
 
-    console.log(newBlog);
     return newBlog;
 };
 
