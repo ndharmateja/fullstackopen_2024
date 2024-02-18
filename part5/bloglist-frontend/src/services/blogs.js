@@ -2,14 +2,14 @@ import axios from "axios";
 const blogsUrl = "/api/blogs";
 const loginUrl = "/api/login";
 
-const login = (username, password) => {
-    const request = axios.post(loginUrl, { username, password });
-    return request.then((response) => response.data);
+const login = async (username, password) => {
+    const { data } = await axios.post(loginUrl, { username, password });
+    return data;
 };
 
-const getAll = () => {
-    const request = axios.get(blogsUrl);
-    return request.then((response) => response.data);
+const getAll = async () => {
+    const { data } = await axios.get(blogsUrl);
+    return data;
 };
 
 export default { login, getAll };
