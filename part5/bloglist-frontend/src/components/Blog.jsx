@@ -1,10 +1,13 @@
 import { useState } from "react";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, likeBlog }) => {
     const { title, url, likes, author } = blog;
     const [visible, setVisible] = useState(false);
 
     const toggleVisibility = () => setVisible(!visible);
+    const handleLikeClick = async () => {
+        await likeBlog(blog);
+    };
 
     const blogStyle = {
         paddingTop: 10,
@@ -26,7 +29,8 @@ const Blog = ({ blog }) => {
                 <div>
                     <div>{url}</div>
                     <div>
-                        likes: {likes} <button>like</button>
+                        likes: {likes}{" "}
+                        <button onClick={handleLikeClick}>like</button>
                     </div>
                     <div>{author}</div>
                 </div>

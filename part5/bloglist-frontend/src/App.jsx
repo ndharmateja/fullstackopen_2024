@@ -81,6 +81,19 @@ const App = () => {
         }
     };
 
+    const likeBlog = async (blog) => {
+        const blogId = blog.id;
+        const blogCopy = {
+            ...blog,
+            likes: blog.likes + 1,
+            user: blog.user.id,
+        };
+        delete blogCopy.id;
+
+        const updatedBlog = await blogService.updateBlog(blogId, blogCopy);
+        setBlogs(blogs.map((b) => (b.id === blogId ? updatedBlog : b)));
+    };
+
     return (
         <div>
             <Notification
@@ -95,7 +108,7 @@ const App = () => {
                     <Togglable buttonLabel="new blog" ref={togglableRef}>
                         <CreateBlogForm createBlog={createBlog} />
                     </Togglable>
-                    <Blogs blogs={blogs} />
+                    <Blogs blogs={blogs} likeBlog={likeBlog} />
                 </div>
             )}
         </div>

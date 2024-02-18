@@ -44,6 +44,7 @@ const updateBlog = async (req, res) => {
     const { id } = req.params;
     const body = req.body;
     const blog = {
+        user: body.user,
         likes: body.likes,
         url: body.url,
         title: body.title,
