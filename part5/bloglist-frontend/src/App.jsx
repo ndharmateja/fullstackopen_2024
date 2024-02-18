@@ -1,24 +1,30 @@
-import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
-import blogService from './services/blogs'
+import { useState, useEffect } from "react";
+import blogService from "./services/blogs";
+import LoginForm from "./components/LoginForm";
+import Blogs from "./components/Blogs";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+    const [blogs, setBlogs] = useState([]);
+    const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
-  }, [])
+    useEffect(() => {
+        blogService.getAll().then((blogs) => setBlogs(blogs));
+    }, []);
 
-  return (
-    <div>
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  )
-}
+    const login = async (username, password) => {
+        const user = await blogService.login(username, password);
+        setUser(user);
+    };
 
-export default App
+    return (
+        <div>
+            {user === null ? (
+                <LoginForm login={login} />
+            ) : (
+                <Blogs blogs={blogs} name={user.name} />
+            )}
+        </div>
+    );
+};
+
+export default App;
