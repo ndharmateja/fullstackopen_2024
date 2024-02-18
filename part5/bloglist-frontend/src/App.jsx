@@ -3,6 +3,8 @@ import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
 import Blogs from "./components/Blogs";
 import { BLOG_APP_USER } from "./constants";
+import Header from "./components/Header";
+import CreateBlogForm from "./components/CreateBlogForm";
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
@@ -37,11 +39,11 @@ const App = () => {
             {user === null ? (
                 <LoginForm login={login} />
             ) : (
-                <Blogs
-                    blogs={blogs}
-                    name={user.name}
-                    onLogoutClick={handleLogout}
-                />
+                <div>
+                    <Header name={user.name} onLogoutClick={handleLogout} />
+                    <CreateBlogForm />
+                    <Blogs blogs={blogs} />
+                </div>
             )}
         </div>
     );
