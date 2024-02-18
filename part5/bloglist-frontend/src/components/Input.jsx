@@ -3,7 +3,7 @@ import React from "react";
 const Input = ({ label, value, setValue }) => {
     return (
         <div>
-            <label htmlFor={label}>{label}</label>
+            <label htmlFor={label}>{`${label} `}</label>
             <input
                 type="text"
                 id={label}

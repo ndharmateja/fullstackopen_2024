@@ -19,9 +19,9 @@ const CreateBlogForm = ({ createBlog }) => {
         <div>
             <h2>create new</h2>
             <form onSubmit={handleSubmit}>
-                <Input label="title:" value={title} setValue={setTitle} />
-                <Input label="author:" value={author} setValue={setAuthor} />
-                <Input label="url:" value={url} setValue={setUrl} />
+                <Input label="title" value={title} setValue={setTitle} />
+                <Input label="author" value={author} setValue={setAuthor} />
+                <Input label="url" value={url} setValue={setUrl} />
                 <button>create</button>
             </form>
         </div>

@@ -10,16 +10,14 @@ const LoginForm = ({ login }) => {
             await login(username, password);
             setUsername("");
             setPassword("");
-        } catch (error) {
-            console.log(error);
-        }
+        } catch (error) {}
     };
 
     return (
         <div>
             <h2>log in to application</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">username</label>
+                <label htmlFor="username">username </label>
                 <input
                     id="username"
                     type="text"
@@ -27,7 +25,7 @@ const LoginForm = ({ login }) => {
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <br />
-                <label htmlFor="password">password</label>
+                <label htmlFor="password">password </label>
                 <input
                     id="password"
                     type="password"
