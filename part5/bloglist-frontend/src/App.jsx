@@ -94,6 +94,9 @@ const App = () => {
         setBlogs(blogs.map((b) => (b.id === blogId ? updatedBlog : b)));
     };
 
+    // sort blogs in decreasing order of likes
+    blogs.sort((b1, b2) => -(b1.likes - b2.likes));
+
     return (
         <div>
             <Notification
