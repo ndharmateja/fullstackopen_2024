@@ -1,6 +1,6 @@
 import Blog from "./Blog";
 
-const Blogs = ({ blogs, name, onLogoutClick }) => {
+const Blogs = ({ blogs }) => {
     return (
         <div>
             <h2>blogs</h2>
