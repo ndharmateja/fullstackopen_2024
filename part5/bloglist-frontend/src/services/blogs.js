@@ -1,9 +1,15 @@
-import axios from 'axios'
-const baseUrl = '/api/blogs'
+import axios from "axios";
+const blogsUrl = "/api/blogs";
+const loginUrl = "/api/login";
+
+const login = (username, password) => {
+    const request = axios.post(loginUrl, { username, password });
+    return request.then((response) => response.data);
+};
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  return request.then(response => response.data)
-}
+    const request = axios.get(blogsUrl);
+    return request.then((response) => response.data);
+};
 
-export default { getAll }
+export default { login, getAll };
