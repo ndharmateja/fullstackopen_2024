@@ -23,19 +23,30 @@ const createBlog = async (req, res) => {
     // Add user to blog and create blog
     blogData.user = user.id;
     const blog = new Blog(blogData);
-    const result = await blog.save();
+    const createdBlog = await blog.save();
 
     // Add blog id to user and save user
-    user.blogs = user.blogs.concat(result.id);
+    user.blogs = user.blogs.concat(createdBlog.id);
     await user.save();
 
-    return res.status(201).json(result);
+    // retrieve blog and return
+    const fetchedBlog = await Blog.findById(createdBlog).populate("user", {
+        username: 1,
+        name: 1,
+        id: 1,
+    });
+
+    return res.status(201).json(fetchedBlog);
 };
 
 const getOneBlog = async (req, res) => {
     const id = req.params.id;
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(id).populate("user", {
+        username: 1,
+        name: 1,
+        id: 1,
+    });
     if (blog) return res.json(blog);
     else return res.status(404).end();
 };
