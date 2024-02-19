@@ -50,6 +50,7 @@ const App = () => {
                 JSON.stringify(fetchedUser)
             );
             setUser(fetchedUser);
+            blogService.setToken(fetchedUser.token);
         } catch (error) {
             showNotification(error.response.data.error, true);
 
@@ -70,7 +71,10 @@ const App = () => {
         try {
             const newBlog = await blogService.createBlog(title, author, url);
             // show notification and toggle form visibility and add blog to state
-            showNotification(`a new blog "${title}" by "${author}" added`);
+            showNotification(
+                `a new blog "${title}" by "${author}" added`,
+                false
+            );
             togglableRef.current.toggleVisibility();
             setBlogs([...blogs, newBlog]);
         } catch (error) {
@@ -94,6 +98,20 @@ const App = () => {
         setBlogs(blogs.map((b) => (b.id === blogId ? updatedBlog : b)));
     };
 
+    const deleteBlog = async (blogId) => {
+        try {
+            await blogService.deleteBlog(blogId);
+
+            // show notification & remove the blog with blogId from state
+            const blogToDelete = blogs.find((b) => b.id === blogId);
+            const { title, author } = blogToDelete;
+            showNotification(`blog "${title}" by "${author}" deleted`, false);
+            setBlogs(blogs.filter((b) => b.id !== blogId));
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     // sort blogs in decreasing order of likes
     blogs.sort((b1, b2) => -(b1.likes - b2.likes));
 
@@ -111,7 +129,12 @@ const App = () => {
                     <Togglable buttonLabel="new blog" ref={togglableRef}>
                         <CreateBlogForm createBlog={createBlog} />
                     </Togglable>
-                    <Blogs blogs={blogs} likeBlog={likeBlog} />
+                    <Blogs
+                        blogs={blogs}
+                        likeBlog={likeBlog}
+                        deleteBlog={deleteBlog}
+                        loggedInUserName={user.username}
+                    />
                 </div>
             )}
         </div>

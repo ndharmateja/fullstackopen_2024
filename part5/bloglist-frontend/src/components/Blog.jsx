@@ -1,12 +1,18 @@
 import { useState } from "react";
 
-const Blog = ({ blog, likeBlog }) => {
+const Blog = ({ blog, likeBlog, deleteBlog, loggedInUserName }) => {
     const { title, url, likes, author } = blog;
     const [visible, setVisible] = useState(false);
 
     const toggleVisibility = () => setVisible(!visible);
     const handleLikeClick = async () => {
         await likeBlog(blog);
+    };
+    const handleRemoveClick = async () => {
+        const shouldRemove = window.confirm(
+            `Remove blog "${title}" by "${author}"?`
+        );
+        if (shouldRemove) await deleteBlog(blog.id);
     };
 
     const blogStyle = {
@@ -33,6 +39,9 @@ const Blog = ({ blog, likeBlog }) => {
                         <button onClick={handleLikeClick}>like</button>
                     </div>
                     <div>{author}</div>
+                    {loggedInUserName === blog.user.username && (
+                        <button onClick={handleRemoveClick}>remove</button>
+                    )}
                 </div>
             )}
         </div>
