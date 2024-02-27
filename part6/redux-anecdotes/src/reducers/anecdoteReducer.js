@@ -1,4 +1,5 @@
 const VOTE_ACTION = "VOTE";
+const CREATE_ANECDOTE_ACTION = "CREATE_ANECDOTE";
 
 const anecdotesAtStart = [
     "If it hurts, do it more often",
@@ -27,11 +28,16 @@ const reducer = (state = initialState, action) => {
 
     switch (action.type) {
         case VOTE_ACTION: {
-            const { id } = action.payload;
+            const id = action.payload;
             const stateCopy = [...state];
             return stateCopy.map((a) =>
                 a.id !== id ? a : { ...a, votes: a.votes + 1 }
             );
+        }
+
+        case CREATE_ANECDOTE_ACTION: {
+            const anecdote = action.payload;
+            return [...state, anecdote];
         }
 
         default:
@@ -44,7 +50,15 @@ const reducer = (state = initialState, action) => {
 export const voteAnecdote = (id) => {
     return {
         type: VOTE_ACTION,
-        payload: { id },
+        payload: id,
+    };
+};
+
+export const createAnecdote = (anecdote) => {
+    const anecdoteObj = asObject(anecdote);
+    return {
+        type: CREATE_ANECDOTE_ACTION,
+        payload: anecdoteObj,
     };
 };
 
