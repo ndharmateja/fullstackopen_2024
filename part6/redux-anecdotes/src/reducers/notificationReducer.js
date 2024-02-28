@@ -3,22 +3,28 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     message: "",
     show: false,
+    timeoutId: -1,
 };
 
 const notificationSlice = createSlice({
     name: "notification",
     initialState,
     reducers: {
-        showNotification(_state, action) {
-            return { message: action.payload, show: true };
+        showNotification(state, action) {
+            state.message = action.payload;
+            state.show = true;
         },
         hideNotification() {
             return initialState;
         },
+        setTimeoutId(state, action) {
+            state.timeoutId = action.payload;
+        },
     },
 });
 
-const { showNotification, hideNotification } = notificationSlice.actions;
+const { showNotification, hideNotification, setTimeoutId } =
+    notificationSlice.actions;
 
 /**
  *
@@ -27,9 +33,24 @@ const { showNotification, hideNotification } = notificationSlice.actions;
  * @returns
  */
 export const showAndHideNotification = (message, time) => {
-    return (dispatch) => {
+    return (dispatch, getState) => {
+        // clear timeout id of previous notification (if exists)
+        const { notification } = getState();
+        clearTimeout(notification.timeoutId);
+
+        // show the new notification
         dispatch(showNotification(message));
-        setTimeout(() => dispatch(hideNotification()), time * 1000);
+
+        // set a timeout for hiding the notification
+        const newTimeoutId = setTimeout(() => {
+            dispatch(hideNotification());
+
+            // set timeout id to -1 after hiding the notification
+            dispatch(setTimeoutId(-1));
+        }, time * 1000);
+
+        // set timeout id to be the new timeout id
+        dispatch(setTimeoutId(newTimeoutId));
     };
 };
 
