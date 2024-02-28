@@ -3,7 +3,7 @@ import { voteAnecdote } from "../reducers/anecdoteReducer";
 
 const AnecdoteList = () => {
     const sortedAnecdotes = useSelector((state) =>
-        state.sort((a1, a2) => -(a1.votes - a2.votes))
+        state.anecdotes.sort((a1, a2) => -(a1.votes - a2.votes))
     );
     const dispatch = useDispatch();
 
