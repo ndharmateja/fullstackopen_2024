@@ -6,7 +6,6 @@ const AnecdoteForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const anecdote = e.target.anecdote.value;
-        console.log(anecdote);
         e.target.anecdote.value = "";
         dispatch(createAnecdote(anecdote));
     };
