@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    message: "notification message",
-    show: true,
+    message: "",
+    show: false,
 };
 
 const notificationSlice = createSlice({
@@ -18,5 +18,19 @@ const notificationSlice = createSlice({
     },
 });
 
-export const { showNotification, hideNotification } = notificationSlice.actions;
+const { showNotification, hideNotification } = notificationSlice.actions;
+
+/**
+ *
+ * @param {*} message notification message
+ * @param {*} time in seconds
+ * @returns
+ */
+export const showAndHideNotification = (message, time) => {
+    return (dispatch) => {
+        dispatch(showNotification(message));
+        setTimeout(() => dispatch(hideNotification()), time * 1000);
+    };
+};
+
 export default notificationSlice.reducer;
