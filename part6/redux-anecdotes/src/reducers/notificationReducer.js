@@ -32,7 +32,7 @@ const { showNotification, hideNotification, setTimeoutId } =
  * @param {*} time in seconds
  * @returns
  */
-export const showAndHideNotification = (message, time) => {
+export const showAndHideNotification = (message, time = 5) => {
     return (dispatch, getState) => {
         // clear timeout id of previous notification (if exists)
         const { notification } = getState();
