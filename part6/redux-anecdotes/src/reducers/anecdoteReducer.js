@@ -10,22 +10,19 @@ const anecdotesSlice = createSlice({
             const anecdote = action.payload;
             state.push(anecdote);
         },
-        voteAnecdote(state, action) {
-            const id = action.payload;
-            state.forEach((a) => {
-                if (a.id === id) {
-                    a.votes += 1;
-                }
-            });
-        },
         setAnecdotes(_state, action) {
             return action.payload;
+        },
+        updateAnecdote(state, action) {
+            const { id } = action.payload;
+            return state.map((a) =>
+                a.id !== id ? a : { ...a, ...action.payload }
+            );
         },
     },
 });
 
-export const { appendAnecdote, voteAnecdote, setAnecdotes } =
-    anecdotesSlice.actions;
+const { appendAnecdote, setAnecdotes, updateAnecdote } = anecdotesSlice.actions;
 
 export const initializeAnecdotes = () => {
     return async (dispatch) => {
@@ -43,6 +40,25 @@ export const createAnecdote = (content) => {
         const createdAnecdote = await anecdotesService.createAnecdote(content);
         dispatch(appendAnecdote(createdAnecdote));
         dispatch(showAndHideNotification(`you created '${content}'`, 3));
+    };
+};
+
+export const voteAnecdote = (id, content) => {
+    return async (dispatch, getState) => {
+        // get the curr votes of the anecdote object
+        const anecdoteToUpdate = getState().anecdotes.find((a) => a.id === id);
+
+        // return if not a valid id
+        if (!anecdoteToUpdate) return;
+
+        // call the service and update
+        const updatedAnecdote = await anecdotesService.updateAnecdote(id, {
+            votes: anecdoteToUpdate.votes + 1,
+        });
+
+        // update the state with the returned data
+        dispatch(updateAnecdote(updatedAnecdote));
+        dispatch(showAndHideNotification(`you voted '${content}'`, 3));
     };
 };
 

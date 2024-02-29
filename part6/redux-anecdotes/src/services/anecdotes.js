@@ -12,4 +12,9 @@ const createAnecdote = async (content) => {
     return response.data;
 };
 
-export default { getAllAnecdotes, createAnecdote };
+const updateAnecdote = async (id, body) => {
+    const response = await axios.patch(`${baseUrl}/${id}`, body);
+    return response.data;
+};
+
+export default { getAllAnecdotes, createAnecdote, updateAnecdote };
