@@ -9,7 +9,9 @@ import { initializeAnecdotes } from "./reducers/anecdoteReducer";
 const App = () => {
     const dispatch = useDispatch();
 
-    useEffect(() => dispatch(initializeAnecdotes()));
+    useEffect(() => {
+        dispatch(initializeAnecdotes());
+    });
 
     return (
         <div>
