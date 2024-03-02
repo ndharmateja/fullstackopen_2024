@@ -1,8 +1,15 @@
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+    hideNotificationAction,
+    showNotificationAction,
+    useNotificationDispatch,
+} from "../NotificationContextProvider";
 
 const AnecdoteForm = () => {
+    const dispatchNotification = useNotificationDispatch();
     const queryClient = useQueryClient();
+
     const newAnecdoteMutation = useMutation({
         mutationFn: async (newAnecdote) => {
             const res = await axios.post(
@@ -17,6 +24,14 @@ const AnecdoteForm = () => {
                 ["anecdotes"],
                 anecdotes.concat(newAnecdote)
             );
+            dispatchNotification(
+                showNotificationAction(
+                    `anecdote '${newAnecdote.content}' created`
+                )
+            );
+            setTimeout(() => {
+                dispatchNotification(hideNotificationAction());
+            }, 5000);
         },
     });
 
