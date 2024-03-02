@@ -29,12 +29,19 @@ export const useNotificationDispatch = () => {
 };
 
 // action creators
-export const showNotificationAction = (message) => {
+const showNotificationAction = (message) => {
     return { type: SHOW, payload: message };
 };
-
-export const hideNotificationAction = () => {
+const hideNotificationAction = () => {
     return { type: HIDE };
+};
+
+// fn to show and hide notification
+export const showAndHideNotification = (dispatch, message, timeInSec = 3) => {
+    dispatch(showNotificationAction(message));
+    setTimeout(() => {
+        dispatch(hideNotificationAction());
+    }, 1000 * timeInSec);
 };
 
 const NotificationContextProvider = (props) => {

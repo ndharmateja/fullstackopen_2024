@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-    hideNotificationAction,
-    showNotificationAction,
+    showAndHideNotification,
     useNotificationDispatch,
 } from "../NotificationContextProvider";
 
@@ -24,14 +23,14 @@ const AnecdoteForm = () => {
                 ["anecdotes"],
                 anecdotes.concat(newAnecdote)
             );
-            dispatchNotification(
-                showNotificationAction(
-                    `anecdote '${newAnecdote.content}' created`
-                )
+            showAndHideNotification(
+                dispatchNotification,
+                `anecdote '${newAnecdote.content}' created`
             );
-            setTimeout(() => {
-                dispatchNotification(hideNotificationAction());
-            }, 5000);
+        },
+        onError: ({ response }) => {
+            const error = response.data.error;
+            showAndHideNotification(dispatchNotification, error);
         },
     });
 

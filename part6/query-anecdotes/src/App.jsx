@@ -3,8 +3,7 @@ import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
 import axios from "axios";
 import {
-    hideNotificationAction,
-    showNotificationAction,
+    showAndHideNotification,
     useNotificationDispatch,
 } from "./NotificationContextProvider";
 
@@ -28,14 +27,10 @@ const App = () => {
                     a.id !== updatedAnecdote.id ? a : updatedAnecdote
                 )
             );
-            dispatchNotification(
-                showNotificationAction(
-                    `anecdote '${updatedAnecdote.content}' voted`
-                )
+            showAndHideNotification(
+                dispatchNotification,
+                `anecdote '${updatedAnecdote.content}' created`
             );
-            setTimeout(() => {
-                dispatchNotification(hideNotificationAction());
-            }, 5000);
         },
     });
 
