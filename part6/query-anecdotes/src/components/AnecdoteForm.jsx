@@ -4,10 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const AnecdoteForm = () => {
     const queryClient = useQueryClient();
     const newAnecdoteMutation = useMutation({
-        mutationFn: (newAnecdote) =>
-            axios
-                .post("http://localhost:3001/anecdotes", newAnecdote)
-                .then((res) => res.data),
+        mutationFn: async (newAnecdote) => {
+            const res = await axios.post(
+                "http://localhost:3001/anecdotes",
+                newAnecdote
+            );
+            return res.data;
+        },
         onSuccess: (newAnecdote) => {
             const anecdotes = queryClient.getQueryData(["anecdotes"]);
             queryClient.setQueryData(
