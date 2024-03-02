@@ -1,0 +1,22 @@
+PUT http://localhost:3001/anecdotes/RHRghKA HTTP/1.1
+Content-Type: application/json
+
+{ "content": "hellllllooooo", "votes": 1, "id": "RHRgyKA" }
+
+###
+POST http://localhost:3001/anecdotes HTTP/1.1
+Content-Type: application/json
+
+{ "content": "hellllllooooo", "votes": 1 }
+
+###
+GET http://localhost:3001/anecdotes HTTP/1.1
+
+###
+GET http://localhost:3001/anecdotes/RHRgyKA HTTP/1.1
+
+###
+PATCH http://localhost:3001/anecdotes/RHRgyKA HTTP/1.1
+Content-Type: application/json
+
+{ "votes": 1 }
