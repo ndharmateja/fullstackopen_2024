@@ -10,11 +10,12 @@ const App = () => {
 
     const result = useQuery({
         queryKey: ["anecdotes"],
-        queryFn: () =>
-            axios
-                .get("http://localhost:3001/anecdotes")
-                .then((res) => res.data),
+        queryFn: async () => {
+            const res = await axios.get("http://localhost:3001/anecdotes");
+            return res.data;
+        },
         retry: 1,
+        refetchOnWindowFocus: false,
     });
 
     if (result.isError)
