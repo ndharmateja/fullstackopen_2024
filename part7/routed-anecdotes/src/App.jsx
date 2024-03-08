@@ -4,7 +4,13 @@ import Footer from "./components/Footer";
 import AnecdoteList from "./components/AnecdoteList";
 import CreateNew from "./components/CreateNew";
 import Menu from "./components/Menu";
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import Anecdote from "./components/Anecdote";
+import {
+    Routes,
+    Route,
+    BrowserRouter as Router,
+    Navigate,
+} from "react-router-dom";
 
 const App = () => {
     const [anecdotes, setAnecdotes] = useState([
@@ -52,6 +58,14 @@ const App = () => {
                 <Route
                     path="/"
                     element={<AnecdoteList anecdotes={anecdotes} />}
+                />
+                <Route
+                    path="/anecdotes"
+                    element={<Navigate to="/" replace />}
+                />
+                <Route
+                    path="/anecdotes/:id"
+                    element={<Anecdote anecdotes={anecdotes} />}
                 />
                 <Route path="/about" element={<About />} />
                 <Route path="/create" element={<CreateNew addNew={addNew} />} />
