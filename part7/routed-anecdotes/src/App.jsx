@@ -54,6 +54,7 @@ const App = () => {
         <Router>
             <h1>Software anecdotes</h1>
             <Menu />
+            {notification && <div>{notification}</div>}
             <Routes>
                 <Route
                     path="/"
@@ -68,9 +69,16 @@ const App = () => {
                     element={<Anecdote anecdotes={anecdotes} />}
                 />
                 <Route path="/about" element={<About />} />
-                <Route path="/create" element={<CreateNew addNew={addNew} />} />
+                <Route
+                    path="/create"
+                    element={
+                        <CreateNew
+                            addNew={addNew}
+                            setNotification={setNotification}
+                        />
+                    }
+                />
             </Routes>
-
             <Footer />
         </Router>
     );
