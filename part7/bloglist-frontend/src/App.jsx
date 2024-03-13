@@ -9,6 +9,7 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import { showAndHideNotification } from "./reducers/notificationReducer";
 import { useDispatch } from "react-redux";
+import { initializeBlogs } from "./reducers/blogsReducer";
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
@@ -17,15 +18,14 @@ const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        blogService.getAll().then((blogs) => setBlogs(blogs));
-    }, []);
-
-    useEffect(() => {
         const userString = window.localStorage.getItem(BLOG_APP_USER);
         if (userString) {
             const parsedUser = JSON.parse(userString);
             setUser(parsedUser);
             blogService.setToken(parsedUser.token);
+
+            // get blogs from backend
+            dispatch(initializeBlogs());
         }
     }, []);
 
@@ -121,7 +121,6 @@ const App = () => {
                         <CreateBlogForm createBlog={createBlog} />
                     </Togglable>
                     <Blogs
-                        blogs={blogs}
                         likeBlog={likeBlog}
                         deleteBlog={deleteBlog}
                         loggedInUserName={user.username}
