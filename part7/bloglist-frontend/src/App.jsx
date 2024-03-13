@@ -1,69 +1,39 @@
-import { useState, useEffect, useRef } from "react";
-import blogService from "./services/blogs";
+import { useEffect } from "react";
 import LoginForm from "./components/LoginForm";
 import Blogs from "./components/Blogs";
-import { BLOG_APP_USER } from "./constants";
 import Header from "./components/Header";
 import CreateBlogForm from "./components/CreateBlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
-import { showAndHideNotification } from "./reducers/notificationReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "./reducers/blogsReducer";
+import { loadUser } from "./reducers/userReducer";
 
 const App = () => {
-    const [user, setUser] = useState(null);
+    const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const userString = window.localStorage.getItem(BLOG_APP_USER);
-        if (userString) {
-            const parsedUser = JSON.parse(userString);
-            setUser(parsedUser);
-            blogService.setToken(parsedUser.token);
-
-            // get blogs from backend
-            dispatch(initializeBlogs());
-        }
+        dispatch(loadUser());
     }, []);
 
-    const login = async (username, password) => {
-        try {
-            const fetchedUser = await blogService.login(username, password);
-
-            // Store to local storage
-            window.localStorage.setItem(
-                BLOG_APP_USER,
-                JSON.stringify(fetchedUser)
-            );
-            setUser(fetchedUser);
-            blogService.setToken(fetchedUser.token);
-        } catch (error) {
-            dispatch(showAndHideNotification(error.response.data.error, true));
-
-            // throw error for the child component
-            throw new Error("login failed");
-        }
-    };
-
-    const handleLogout = () => {
-        window.localStorage.removeItem(BLOG_APP_USER);
-        blogService.setToken(null);
-        setUser(null);
-    };
+    useEffect(() => {
+        if (!user) return;
+        dispatch(initializeBlogs());
+    }, [user]);
 
     return (
         <div>
             <Notification />
             {user === null ? (
-                <LoginForm login={login} />
+                <LoginForm />
             ) : (
                 <div>
-                    <Header name={user.name} onLogoutClick={handleLogout} />
+                    <Header />
                     <Togglable buttonLabel="new blog">
                         <CreateBlogForm />
                     </Togglable>
-                    <Blogs loggedInUserName={user.username} />
+                    <Blogs />
                 </div>
             )}
         </div>

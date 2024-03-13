@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { deleteBlog, likeBlog } from "../reducers/blogsReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-const Blog = ({ blog, loggedInUserName }) => {
+const Blog = ({ blog }) => {
     const { title, url, likes, author } = blog;
     const [visible, setVisible] = useState(false);
 
     const dispatch = useDispatch();
+    const loggedInUserName = useSelector((store) => store.user.username);
 
     const toggleVisibility = () => setVisible(!visible);
     const handleRemoveClick = async () => {
