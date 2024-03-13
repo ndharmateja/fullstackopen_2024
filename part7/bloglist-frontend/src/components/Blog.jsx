@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { likeBlog } from "../reducers/blogsReducer";
+import { useDispatch } from "react-redux";
 
-const Blog = ({ blog, likeBlog, deleteBlog, loggedInUserName }) => {
+const Blog = ({ blog, deleteBlog, loggedInUserName }) => {
     const { title, url, likes, author } = blog;
     const [visible, setVisible] = useState(false);
 
+    const dispatch = useDispatch();
+
     const toggleVisibility = () => setVisible(!visible);
-    const handleLikeClick = async () => {
-        await likeBlog(blog);
-    };
     const handleRemoveClick = async () => {
         const shouldRemove = window.confirm(
             `Remove blog "${title}" by "${author}"?`
@@ -36,7 +37,9 @@ const Blog = ({ blog, likeBlog, deleteBlog, loggedInUserName }) => {
                     <div>{url}</div>
                     <div>
                         likes: {likes}{" "}
-                        <button onClick={handleLikeClick}>like</button>
+                        <button onClick={() => dispatch(likeBlog(blog.id))}>
+                            like
+                        </button>
                     </div>
                     <div>{author}</div>
                     {loggedInUserName === blog.user.username && (

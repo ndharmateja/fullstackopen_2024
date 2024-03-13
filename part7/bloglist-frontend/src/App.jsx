@@ -75,19 +75,6 @@ const App = () => {
         }
     };
 
-    const likeBlog = async (blog) => {
-        const blogId = blog.id;
-        const blogCopy = {
-            ...blog,
-            likes: blog.likes + 1,
-            user: blog.user.id,
-        };
-        delete blogCopy.id;
-
-        const updatedBlog = await blogService.updateBlog(blogId, blogCopy);
-        setBlogs(blogs.map((b) => (b.id === blogId ? updatedBlog : b)));
-    };
-
     const deleteBlog = async (blogId) => {
         try {
             await blogService.deleteBlog(blogId);
@@ -121,7 +108,6 @@ const App = () => {
                         <CreateBlogForm createBlog={createBlog} />
                     </Togglable>
                     <Blogs
-                        likeBlog={likeBlog}
                         deleteBlog={deleteBlog}
                         loggedInUserName={user.username}
                     />
