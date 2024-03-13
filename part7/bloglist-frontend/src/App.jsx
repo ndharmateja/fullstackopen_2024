@@ -75,24 +75,6 @@ const App = () => {
         }
     };
 
-    const deleteBlog = async (blogId) => {
-        try {
-            await blogService.deleteBlog(blogId);
-
-            // show notification & remove the blog with blogId from state
-            const blogToDelete = blogs.find((b) => b.id === blogId);
-            const { title, author } = blogToDelete;
-            dispatch(
-                showAndHideNotification(
-                    `blog "${title}" by "${author}" deleted`
-                )
-            );
-            setBlogs(blogs.filter((b) => b.id !== blogId));
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     // sort blogs in decreasing order of likes
     blogs.sort((b1, b2) => -(b1.likes - b2.likes));
 
@@ -107,10 +89,7 @@ const App = () => {
                     <Togglable buttonLabel="new blog" ref={togglableRef}>
                         <CreateBlogForm createBlog={createBlog} />
                     </Togglable>
-                    <Blogs
-                        deleteBlog={deleteBlog}
-                        loggedInUserName={user.username}
-                    />
+                    <Blogs loggedInUserName={user.username} />
                 </div>
             )}
         </div>

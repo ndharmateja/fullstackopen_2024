@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { likeBlog } from "../reducers/blogsReducer";
+import { deleteBlog, likeBlog } from "../reducers/blogsReducer";
 import { useDispatch } from "react-redux";
 
-const Blog = ({ blog, deleteBlog, loggedInUserName }) => {
+const Blog = ({ blog, loggedInUserName }) => {
     const { title, url, likes, author } = blog;
     const [visible, setVisible] = useState(false);
 
@@ -13,7 +13,7 @@ const Blog = ({ blog, deleteBlog, loggedInUserName }) => {
         const shouldRemove = window.confirm(
             `Remove blog "${title}" by "${author}"?`
         );
-        if (shouldRemove) await deleteBlog(blog.id);
+        if (shouldRemove) dispatch(deleteBlog(blog.id));
     };
 
     const blogStyle = {

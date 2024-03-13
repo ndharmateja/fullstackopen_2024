@@ -1,7 +1,7 @@
 import Blog from "./Blog";
 import { useSelector } from "react-redux";
 
-const Blogs = ({ deleteBlog, loggedInUserName }) => {
+const Blogs = ({ loggedInUserName }) => {
     const blogs = useSelector((store) => store.blogs);
 
     return (
@@ -11,7 +11,6 @@ const Blogs = ({ deleteBlog, loggedInUserName }) => {
                 <Blog
                     key={blog.id}
                     blog={blog}
-                    deleteBlog={deleteBlog}
                     loggedInUserName={loggedInUserName}
                 />
             ))}
