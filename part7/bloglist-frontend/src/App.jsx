@@ -14,7 +14,6 @@ import { initializeBlogs } from "./reducers/blogsReducer";
 const App = () => {
     const [blogs, setBlogs] = useState([]);
     const [user, setUser] = useState(null);
-    const togglableRef = useRef();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -65,7 +64,7 @@ const App = () => {
             ) : (
                 <div>
                     <Header name={user.name} onLogoutClick={handleLogout} />
-                    <Togglable buttonLabel="new blog" ref={togglableRef}>
+                    <Togglable buttonLabel="new blog">
                         <CreateBlogForm />
                     </Togglable>
                     <Blogs loggedInUserName={user.username} />

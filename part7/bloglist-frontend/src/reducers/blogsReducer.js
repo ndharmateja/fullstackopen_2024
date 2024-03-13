@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import blogsService from "../services/blogs";
 import { showAndHideNotification } from "./notificationReducer";
+import { toggleVisibility } from "./visibilityReducer";
 
 const blogsSlice = createSlice({
     name: "blogs",
@@ -83,6 +84,7 @@ export const createBlog = (title, author, url) => {
             // show notification and toggle form visibility and add blog to state
             const message = `a new blog "${title}" by "${author}" added`;
             dispatch(showAndHideNotification(message));
+            dispatch(toggleVisibility());
             dispatch(appendBlog(newBlog));
         } catch (error) {
             dispatch(showAndHideNotification(error.response.data.error, true));

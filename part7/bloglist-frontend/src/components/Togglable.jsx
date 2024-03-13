@@ -1,20 +1,17 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleVisibility } from "../reducers/visibilityReducer";
 
-const Togglable = forwardRef((props, refs) => {
-    const [visible, setVisible] = useState(false);
-
-    const toggleVisibility = () => setVisible(!visible);
-
-    useImperativeHandle(refs, () => {
-        return { toggleVisibility };
-    });
+const Togglable = (props) => {
+    const visible = useSelector((store) => store.visible);
+    const dispatch = useDispatch();
 
     return (
         <div>
             {/* show "buttonLabel" button when visible is false */}
             {!visible && (
                 <div>
-                    <button onClick={toggleVisibility}>
+                    <button onClick={() => dispatch(toggleVisibility())}>
                         {props.buttonLabel}
                     </button>
                 </div>
@@ -23,11 +20,13 @@ const Togglable = forwardRef((props, refs) => {
             {visible && (
                 <div>
                     {props.children}
-                    <button onClick={toggleVisibility}>cancel</button>
+                    <button onClick={() => dispatch(toggleVisibility())}>
+                        cancel
+                    </button>
                 </div>
             )}
         </div>
     );
-});
+};
 
 export default Togglable;
