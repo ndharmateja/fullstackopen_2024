@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import blogsService from "../services/blogs";
+import { showAndHideNotification } from "./notificationReducer";
 
 const blogsSlice = createSlice({
     name: "blogs",
@@ -14,10 +15,13 @@ const blogsSlice = createSlice({
                 b.id === id ? { ...b, likes: b.likes + 1 } : b
             );
         },
+        removeBlog(state, action) {
+            return state.filter((b) => b.id !== action.payload);
+        },
     },
 });
 
-const { setBlogs, increaseLikes } = blogsSlice.actions;
+const { setBlogs, increaseLikes, removeBlog } = blogsSlice.actions;
 
 export const initializeBlogs = () => {
     return async (dispatch) => {
@@ -45,6 +49,24 @@ export const likeBlog = (id) => {
 
         // Update like in backend
         await blogsService.updateBlog(id, blogCopy);
+    };
+};
+
+export const deleteBlog = (blogId) => {
+    return async (dispatch, getState) => {
+        // find blog
+        const { blogs } = getState();
+        const { title, author } = blogs.find((b) => b.id === blogId);
+
+        // remove blog locally
+        dispatch(removeBlog(blogId));
+
+        // remove from backend
+        await blogsService.deleteBlog(blogId);
+
+        // show notification
+        const message = `blog "${title}" by "${author}" deleted`;
+        dispatch(showAndHideNotification(message));
     };
 };
 
