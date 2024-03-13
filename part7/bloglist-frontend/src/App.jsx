@@ -7,15 +7,14 @@ import Header from "./components/Header";
 import CreateBlogForm from "./components/CreateBlogForm";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
+import { showAndHideNotification } from "./reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
 const App = () => {
     const [blogs, setBlogs] = useState([]);
     const [user, setUser] = useState(null);
-    const [notification, setNotification] = useState({
-        message: null,
-        isError: false,
-    });
     const togglableRef = useRef();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -30,16 +29,6 @@ const App = () => {
         }
     }, []);
 
-    const showNotification = (message, isError) => {
-        setNotification({ message, isError });
-        setTimeout(() => {
-            clearNotification();
-        }, 5000);
-    };
-
-    const clearNotification = () =>
-        setNotification({ ...notification, message: null });
-
     const login = async (username, password) => {
         try {
             const fetchedUser = await blogService.login(username, password);
@@ -52,7 +41,7 @@ const App = () => {
             setUser(fetchedUser);
             blogService.setToken(fetchedUser.token);
         } catch (error) {
-            showNotification(error.response.data.error, true);
+            dispatch(showAndHideNotification(error.response.data.error, true));
 
             // throw error for the child component
             throw new Error("login failed");
@@ -71,14 +60,15 @@ const App = () => {
         try {
             const newBlog = await blogService.createBlog(title, author, url);
             // show notification and toggle form visibility and add blog to state
-            showNotification(
-                `a new blog "${title}" by "${author}" added`,
-                false
+            dispatch(
+                showAndHideNotification(
+                    `a new blog "${title}" by "${author}" added`
+                )
             );
             togglableRef.current.toggleVisibility();
             setBlogs([...blogs, newBlog]);
         } catch (error) {
-            showNotification(error.response.data.error, true);
+            dispatch(showAndHideNotification(error.response.data.error, true));
 
             // throw error for the child component
             throw new Error("post creation failed");
@@ -105,7 +95,11 @@ const App = () => {
             // show notification & remove the blog with blogId from state
             const blogToDelete = blogs.find((b) => b.id === blogId);
             const { title, author } = blogToDelete;
-            showNotification(`blog "${title}" by "${author}" deleted`, false);
+            dispatch(
+                showAndHideNotification(
+                    `blog "${title}" by "${author}" deleted`
+                )
+            );
             setBlogs(blogs.filter((b) => b.id !== blogId));
         } catch (error) {
             console.log(error);
@@ -117,10 +111,7 @@ const App = () => {
 
     return (
         <div>
-            <Notification
-                message={notification.message}
-                isError={notification.isError}
-            />
+            <Notification />
             {user === null ? (
                 <LoginForm login={login} />
             ) : (
