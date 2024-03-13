@@ -18,10 +18,13 @@ const blogsSlice = createSlice({
         removeBlog(state, action) {
             return state.filter((b) => b.id !== action.payload);
         },
+        appendBlog(state, action) {
+            return [...state, action.payload];
+        },
     },
 });
 
-const { setBlogs, increaseLikes, removeBlog } = blogsSlice.actions;
+const { setBlogs, increaseLikes, removeBlog, appendBlog } = blogsSlice.actions;
 
 export const initializeBlogs = () => {
     return async (dispatch) => {
@@ -67,6 +70,26 @@ export const deleteBlog = (blogId) => {
         // show notification
         const message = `blog "${title}" by "${author}" deleted`;
         dispatch(showAndHideNotification(message));
+    };
+};
+
+export const createBlog = (title, author, url) => {
+    return async (dispatch) => {
+        if (!title || !author || !url) return;
+
+        try {
+            const newBlog = await blogsService.createBlog(title, author, url);
+
+            // show notification and toggle form visibility and add blog to state
+            const message = `a new blog "${title}" by "${author}" added`;
+            dispatch(showAndHideNotification(message));
+            dispatch(appendBlog(newBlog));
+        } catch (error) {
+            dispatch(showAndHideNotification(error.response.data.error, true));
+
+            // throw error for the child component
+            throw new Error("post creation failed");
+        }
     };
 };
 
