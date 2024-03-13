@@ -13,10 +13,13 @@ const App = () => {
     const user = useSelector((store) => store.user);
     const dispatch = useDispatch();
 
+    // effect hook to load user from local storage
     useEffect(() => {
         dispatch(loadUser());
     }, []);
 
+    // load blogs from backend if user is not null
+    // effect runs again when 'user' changes (login etc)
     useEffect(() => {
         if (!user) return;
         dispatch(initializeBlogs());
