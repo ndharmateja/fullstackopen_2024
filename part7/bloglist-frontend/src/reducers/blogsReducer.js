@@ -3,24 +3,32 @@ import blogsService from "../services/blogs";
 import { showAndHideNotification } from "./notificationReducer";
 import { toggleVisibility } from "./visibilityReducer";
 
+const sortBlogs = (blogs) => blogs.sort((b1, b2) => -(b1.likes - b2.likes));
+
 const blogsSlice = createSlice({
     name: "blogs",
     initialState: [],
     reducers: {
         setBlogs(_state, action) {
-            return action.payload;
+            const blogs = action.payload;
+            sortBlogs(blogs);
+            return blogs;
         },
         increaseLikes(state, action) {
             const id = action.payload;
-            return state.map((b) =>
+            const blogs = state.map((b) =>
                 b.id === id ? { ...b, likes: b.likes + 1 } : b
             );
+            sortBlogs(blogs);
+            return blogs;
         },
         removeBlog(state, action) {
             return state.filter((b) => b.id !== action.payload);
         },
         appendBlog(state, action) {
-            return [...state, action.payload];
+            const blogs = [...state, action.payload];
+            sortBlogs(blogs);
+            return blogs;
         },
     },
 });

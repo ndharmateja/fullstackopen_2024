@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { initializeBlogs } from "./reducers/blogsReducer";
 
 const App = () => {
-    const [blogs, setBlogs] = useState([]);
     const [user, setUser] = useState(null);
     const dispatch = useDispatch();
 
@@ -52,9 +51,6 @@ const App = () => {
         blogService.setToken(null);
         setUser(null);
     };
-
-    // sort blogs in decreasing order of likes
-    blogs.sort((b1, b2) => -(b1.likes - b2.likes));
 
     return (
         <div>
