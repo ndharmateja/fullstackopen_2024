@@ -54,27 +54,6 @@ const App = () => {
         setUser(null);
     };
 
-    const createBlog = async (title, author, url) => {
-        if (!title || !author || !url) return;
-
-        try {
-            const newBlog = await blogService.createBlog(title, author, url);
-            // show notification and toggle form visibility and add blog to state
-            dispatch(
-                showAndHideNotification(
-                    `a new blog "${title}" by "${author}" added`
-                )
-            );
-            togglableRef.current.toggleVisibility();
-            setBlogs([...blogs, newBlog]);
-        } catch (error) {
-            dispatch(showAndHideNotification(error.response.data.error, true));
-
-            // throw error for the child component
-            throw new Error("post creation failed");
-        }
-    };
-
     // sort blogs in decreasing order of likes
     blogs.sort((b1, b2) => -(b1.likes - b2.likes));
 
@@ -87,7 +66,7 @@ const App = () => {
                 <div>
                     <Header name={user.name} onLogoutClick={handleLogout} />
                     <Togglable buttonLabel="new blog" ref={togglableRef}>
-                        <CreateBlogForm createBlog={createBlog} />
+                        <CreateBlogForm />
                     </Togglable>
                     <Blogs loggedInUserName={user.username} />
                 </div>
