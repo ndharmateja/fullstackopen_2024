@@ -4,6 +4,7 @@ const initialState = {
     message: "",
     show: false,
     timeoutId: -1,
+    isError: false,
 };
 
 const notificationSlice = createSlice({
@@ -11,7 +12,8 @@ const notificationSlice = createSlice({
     initialState,
     reducers: {
         showNotification(state, action) {
-            return { ...state, message: action.payload, show: true };
+            const { message, isError } = action.payload;
+            return { ...state, message, isError, show: true };
         },
         hideNotification() {
             return initialState;
@@ -25,12 +27,12 @@ const notificationSlice = createSlice({
 const { showNotification, hideNotification, setTimeoutId } =
     notificationSlice.actions;
 
-export const showAndHideNotification = (message, time = 3) => {
+export const showAndHideNotification = (message, isError = false, time = 3) => {
     return (dispatch, getState) => {
         const { notification } = getState();
         clearTimeout(notification.timeoutId);
 
-        dispatch(showNotification(message));
+        dispatch(showNotification({ message, isError }));
         const newTimeoutId = setTimeout(() => {
             dispatch(hideNotification());
             dispatch(setTimeoutId(-1));
