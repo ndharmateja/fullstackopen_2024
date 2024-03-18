@@ -47,6 +47,10 @@ const App = () => {
                     }
                 >
                     <Route path="/" element={<Blogs />} />
+                    <Route
+                        path="/blogs"
+                        element={<Navigate to="/" replace />}
+                    />
                 </Route>
                 <Route
                     path="/login"
