@@ -27,7 +27,7 @@ const notificationSlice = createSlice({
 const { showNotification, hideNotification, setTimeoutId } =
     notificationSlice.actions;
 
-export const showAndHideNotification = (message, isError = false, time = 3) => {
+export const showAndHideNotification = (message, isError = false, time = 5) => {
     return (dispatch, getState) => {
         const { notification } = getState();
         clearTimeout(notification.timeoutId);
