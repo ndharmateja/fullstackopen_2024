@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Users = () => {
     const users = useSelector((store) => store.users);
@@ -22,7 +23,9 @@ const Users = () => {
                     {users.map(({ id, name, blogs }) => {
                         return (
                             <tr key={id}>
-                                <td>{name}</td>
+                                <td>
+                                    <Link to={`/users/${id}`}>{name}</Link>
+                                </td>
                                 <td>{blogs.length}</td>
                             </tr>
                         );
