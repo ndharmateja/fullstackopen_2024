@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import blogsService from "../services/blogs";
+import loginService from "../services/login";
 import { BLOG_APP_USER } from "../constants";
 import { showAndHideNotification } from "./notificationReducer";
 
@@ -29,7 +30,7 @@ export const loadUser = () => {
 export const login = (username, password) => {
     return async (dispatch) => {
         try {
-            const fetchedUser = await blogsService.login(username, password);
+            const fetchedUser = await loginService.login(username, password);
 
             // Store to local storage
             window.localStorage.setItem(
