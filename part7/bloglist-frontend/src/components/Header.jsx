@@ -12,7 +12,7 @@ const Header = () => {
             <p>
                 <Link to="/blogs">blogs</Link> <Link to="/users">users</Link>
                 &emsp;
-                <em>{name}</em> logged in{" "}
+                <em>{name}</em> logged in&nbsp;
                 <button onClick={() => dispatch(logout())}>logout</button>
             </p>
         </div>
