@@ -10,6 +10,7 @@ const Blogs = () => {
             <Togglable buttonLabel="new blog">
                 <CreateBlogForm />
             </Togglable>
+            <br />
             <BlogsList />
         </div>
     );
