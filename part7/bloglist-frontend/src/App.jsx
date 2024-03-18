@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import { initializeUsers } from "./reducers/usersReducer";
+import Users from "./components/Users";
 
 const App = () => {
     const [userLoaded, setUserLoaded] = useState(false);
@@ -53,6 +54,7 @@ const App = () => {
                         path="/blogs"
                         element={<Navigate to="/" replace />}
                     />
+                    <Route path="/users" element={<Users />} />
                 </Route>
                 <Route
                     path="/login"
