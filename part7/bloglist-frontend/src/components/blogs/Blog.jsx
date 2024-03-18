@@ -37,7 +37,9 @@ const Blog = () => {
                     <tr>
                         <td>Url:</td>
                         <td>
-                            <a href={url}>{url}</a>
+                            <a target="_blank" href={url}>
+                                {url}
+                            </a>
                         </td>
                     </tr>
                     <tr>
