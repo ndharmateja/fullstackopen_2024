@@ -6,6 +6,7 @@ import BlogsList from "./BlogsList";
 const Blogs = () => {
     return (
         <div>
+            <h2>Blogs</h2>
             <Togglable buttonLabel="new blog">
                 <CreateBlogForm />
             </Togglable>
