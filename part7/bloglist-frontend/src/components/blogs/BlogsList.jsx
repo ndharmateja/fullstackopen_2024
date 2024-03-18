@@ -1,7 +1,7 @@
 import Blog from "./Blog";
 import { useSelector } from "react-redux";
 
-const Blogs = () => {
+const BlogsList = () => {
     const blogs = useSelector((store) => store.blogs);
 
     return (
@@ -14,4 +14,4 @@ const Blogs = () => {
     );
 };
 
-export default Blogs;
+export default BlogsList;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteBlog, likeBlog } from "../reducers/blogsReducer";
+import { deleteBlog, likeBlog } from "../../reducers/blogsReducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const Blog = ({ blog }) => {

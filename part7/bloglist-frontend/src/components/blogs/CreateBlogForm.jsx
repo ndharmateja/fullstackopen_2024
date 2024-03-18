@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Input from "./Input";
+import Input from "../Input";
 import { useDispatch } from "react-redux";
-import { createBlog } from "../reducers/blogsReducer";
+import { createBlog } from "../../reducers/blogsReducer";
 
 const CreateBlogForm = () => {
     const [title, setTitle] = useState("");
