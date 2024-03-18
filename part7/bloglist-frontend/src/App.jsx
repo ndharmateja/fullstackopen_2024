@@ -12,6 +12,7 @@ import {
     Navigate,
 } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
+import { initializeUsers } from "./reducers/usersReducer";
 
 const App = () => {
     const [userLoaded, setUserLoaded] = useState(false);
@@ -29,6 +30,7 @@ const App = () => {
     useEffect(() => {
         if (!loggedUser) return;
         dispatch(initializeBlogs());
+        dispatch(initializeUsers());
     }, [loggedUser]);
 
     return !userLoaded ? (
