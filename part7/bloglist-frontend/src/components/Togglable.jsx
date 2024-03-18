@@ -19,10 +19,10 @@ const Togglable = (props) => {
             {/* show the children when visible is true */}
             {visible && (
                 <div>
-                    {props.children}
                     <button onClick={() => dispatch(toggleVisibility())}>
-                        cancel
+                        cancel {props.buttonLabel}
                     </button>
+                    {props.children}
                 </div>
             )}
         </div>
