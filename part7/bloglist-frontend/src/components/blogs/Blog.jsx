@@ -1,6 +1,6 @@
 import { deleteBlog, likeBlog } from "../../reducers/blogsReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 const Blog = () => {
     const { id } = useParams();
@@ -11,7 +11,13 @@ const Blog = () => {
 
     if (!blog) return null;
 
-    const { title, url, likes, author } = blog;
+    const {
+        title,
+        url,
+        likes,
+        author,
+        user: { name, username, id: userId },
+    } = blog;
 
     const handleRemoveClick = async () => {
         const shouldRemove = window.confirm(
@@ -26,20 +32,39 @@ const Blog = () => {
     return (
         <div>
             <h2>{title}</h2>
-            <div>
-                <a href={url}>{url}</a>
-                <div>
-                    likes: {likes}{" "}
-                    <button onClick={() => dispatch(likeBlog(blog.id))}>
-                        like
-                    </button>
-                </div>
-                <div>{author}</div>
-                <br />
-                {loggedInUserName === blog.user.username && (
-                    <button onClick={handleRemoveClick}>remove</button>
-                )}
-            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Url:</td>
+                        <td>
+                            <a href={url}>{url}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Likes:</td>
+                        <td>
+                            {likes}{" "}
+                            <button onClick={() => dispatch(likeBlog(blog.id))}>
+                                like
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Author:</td>
+                        <td>{author}</td>
+                    </tr>
+                    <tr>
+                        <td>Created by:</td>
+                        <td>
+                            <Link to={`/users/${userId}`}>{name}</Link>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            {loggedInUserName === username && (
+                <button onClick={handleRemoveClick}>remove</button>
+            )}
         </div>
     );
 };
