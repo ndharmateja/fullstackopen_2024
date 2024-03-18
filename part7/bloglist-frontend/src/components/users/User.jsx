@@ -8,11 +8,14 @@ const User = () => {
 
     if (!user) return null;
 
-    const { name, blogs } = user;
+    const { name, blogs, username } = user;
 
     return (
         <>
-            <h2>{name}</h2>
+            <h2>
+                {name} - <em>@{username}</em>
+            </h2>
+
             <h3>added blogs</h3>
             <ul>
                 {blogs.map(({ id: blogId, title }) => (

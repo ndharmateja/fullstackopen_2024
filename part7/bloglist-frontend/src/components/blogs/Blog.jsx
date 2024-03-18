@@ -45,7 +45,7 @@ const Blog = () => {
                     <tr>
                         <td>Likes:</td>
                         <td>
-                            {likes}{" "}
+                            {likes}&nbsp;
                             <button onClick={() => dispatch(likeBlog(blog.id))}>
                                 like
                             </button>

@@ -20,11 +20,13 @@ const Users = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(({ id, name, blogs }) => {
+                    {users.map(({ id, name, username, blogs }) => {
                         return (
                             <tr key={id}>
                                 <td>
-                                    <Link to={`/users/${id}`}>{name}</Link>
+                                    <Link to={`/users/${id}`}>
+                                        {name} - <em>@{username}</em>
+                                    </Link>
                                 </td>
                                 <td>{blogs.length}</td>
                             </tr>
