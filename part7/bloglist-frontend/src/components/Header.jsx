@@ -7,6 +7,7 @@ const Header = () => {
 
     return (
         <div>
+            <h1>Blogs</h1>
             <p>
                 {name} logged in{" "}
                 <button onClick={() => dispatch(logout())}>logout</button>
