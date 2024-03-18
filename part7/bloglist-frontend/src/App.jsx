@@ -15,6 +15,7 @@ import AppLayout from "./components/AppLayout";
 import { initializeUsers } from "./reducers/usersReducer";
 import Users from "./components/users/Users";
 import User from "./components/users/User";
+import Blog from "./components/blogs/Blog";
 
 const App = () => {
     const [userLoaded, setUserLoaded] = useState(false);
@@ -55,6 +56,7 @@ const App = () => {
                         path="/blogs"
                         element={<Navigate to="/" replace />}
                     />
+                    <Route path="/blogs/:id" element={<Blog />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/users/:id" element={<User />} />
                 </Route>
