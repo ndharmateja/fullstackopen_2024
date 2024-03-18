@@ -13,7 +13,8 @@ import {
 } from "react-router-dom";
 import AppLayout from "./components/AppLayout";
 import { initializeUsers } from "./reducers/usersReducer";
-import Users from "./components/Users";
+import Users from "./components/users/Users";
+import User from "./components/users/User";
 
 const App = () => {
     const [userLoaded, setUserLoaded] = useState(false);
@@ -55,6 +56,7 @@ const App = () => {
                         element={<Navigate to="/" replace />}
                     />
                     <Route path="/users" element={<Users />} />
+                    <Route path="/users/:id" element={<User />} />
                 </Route>
                 <Route
                     path="/login"
