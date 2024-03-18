@@ -11,7 +11,7 @@ import {
     Route,
     Navigate,
 } from "react-router-dom";
-import AppLayout from "./components/AppLayout";
+import PrivateRoutes from "./components/PrivateRoutes";
 import { initializeUsers } from "./reducers/usersReducer";
 import Users from "./components/users/Users";
 import User from "./components/users/User";
@@ -42,15 +42,7 @@ const App = () => {
         <Router>
             <Notification />
             <Routes>
-                <Route
-                    element={
-                        loggedUser ? (
-                            <AppLayout />
-                        ) : (
-                            <Navigate to="/login" replace />
-                        )
-                    }
-                >
+                <Route element={<PrivateRoutes />}>
                     <Route path="/" element={<Blogs />} />
                     <Route
                         path="/blogs"
