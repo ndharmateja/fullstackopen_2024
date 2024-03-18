@@ -67,14 +67,14 @@ export const likeBlog = (id) => {
 export const deleteBlog = (blogId) => {
     return async (dispatch, getState) => {
         // find blog
-        const { blogs } = getState();
+        const { blogs, user } = getState();
         const { title, author } = blogs.find((b) => b.id === blogId);
 
         // remove blog locally
         dispatch(removeBlog(blogId));
 
         // remove from backend
-        await blogsService.deleteBlog(blogId);
+        await blogsService.deleteBlog(blogId, user.token);
 
         // show notification
         const message = `blog "${title}" by "${author}" deleted`;
@@ -83,11 +83,13 @@ export const deleteBlog = (blogId) => {
 };
 
 export const createBlog = (title, author, url) => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         if (!title || !author || !url) return;
 
+        const blogData = { title, author, url };
+        const { user } = getState();
         try {
-            const newBlog = await blogsService.createBlog(title, author, url);
+            const newBlog = await blogsService.createBlog(blogData, user.token);
 
             // show notification and toggle form visibility and add blog to state
             const message = `a new blog "${title}" by "${author}" added`;
