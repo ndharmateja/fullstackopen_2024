@@ -35,7 +35,13 @@ const blogsSlice = createSlice({
             return state.map((b) =>
                 b.id !== blogId
                     ? b
-                    : { ...b, comments: [...b.comments, { content }] }
+                    : {
+                          ...b,
+                          comments: [
+                              ...b.comments,
+                              { content, id: b.comments.length },
+                          ],
+                      }
             );
         },
     },
