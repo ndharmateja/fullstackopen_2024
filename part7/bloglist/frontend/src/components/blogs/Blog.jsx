@@ -1,8 +1,10 @@
-import { deleteBlog, likeBlog } from "../../reducers/blogsReducer";
+import { deleteBlog, likeBlog, postComment } from "../../reducers/blogsReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import { useField } from "../../hooks";
 
 const Blog = () => {
+    const { reset: resetComment, ...commentField } = useField("text");
     const { id } = useParams();
     const blog = useSelector(({ blogs }) => blogs.find((b) => b.id === id));
     const loggedInUserName = useSelector((store) => store.user.username);
@@ -28,6 +30,13 @@ const Blog = () => {
             dispatch(deleteBlog(blog.id));
             navigate("/");
         }
+    };
+
+    const handleNewComment = async (e) => {
+        e.preventDefault();
+
+        dispatch(postComment(id, commentField.value));
+        resetComment();
     };
 
     return (
@@ -84,6 +93,13 @@ const Blog = () => {
                     ))}
                 </ul>
             )}
+
+            {/* create new comment */}
+            <br />
+            <form onSubmit={handleNewComment}>
+                <input {...commentField} />
+                <button>add comment</button>
+            </form>
         </div>
     );
 };
