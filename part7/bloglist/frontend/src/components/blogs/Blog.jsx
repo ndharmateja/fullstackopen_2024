@@ -17,6 +17,7 @@ const Blog = () => {
         likes,
         author,
         user: { name, username, id: userId },
+        comments,
     } = blog;
 
     const handleRemoveClick = async () => {
@@ -73,6 +74,16 @@ const Blog = () => {
             )}
 
             {/* comments */}
+            <h3>Comments</h3>
+            {comments.length === 0 ? (
+                <div>No comments</div>
+            ) : (
+                <ul>
+                    {comments.map(({ id, content }) => (
+                        <li key={id}>{content}</li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
