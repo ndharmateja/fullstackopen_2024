@@ -30,10 +30,19 @@ const blogsSlice = createSlice({
             sortBlogs(blogs);
             return blogs;
         },
+        addComment(state, action) {
+            const { blogId, content } = action.payload;
+            return state.map((b) =>
+                b.id !== blogId
+                    ? b
+                    : { ...b, comments: [...b.comments, { content }] }
+            );
+        },
     },
 });
 
-const { setBlogs, increaseLikes, removeBlog, appendBlog } = blogsSlice.actions;
+const { setBlogs, increaseLikes, removeBlog, appendBlog, addComment } =
+    blogsSlice.actions;
 
 export const initializeBlogs = () => {
     return async (dispatch) => {
@@ -102,6 +111,16 @@ export const createBlog = (title, author, url) => {
             // throw error for the child component
             throw new Error("post creation failed");
         }
+    };
+};
+
+export const postComment = (blogId, content) => {
+    return async (dispatch) => {
+        // Add comment locally
+        dispatch(addComment({ blogId, content }));
+
+        // Post comment to backend
+        await blogsService.postComment(blogId, content);
     };
 };
 
