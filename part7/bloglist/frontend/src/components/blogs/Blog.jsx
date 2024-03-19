@@ -63,12 +63,16 @@ const Blog = () => {
                     </tr>
                 </tbody>
             </table>
+
+            {/* remove button only if logged in user created the blog */}
             {loggedInUserName === username && (
                 <>
                     <br />
                     <button onClick={handleRemoveClick}>remove</button>
                 </>
             )}
+
+            {/* comments */}
         </div>
     );
 };
