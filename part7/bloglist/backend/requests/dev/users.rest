@@ -1,0 +1,24 @@
+@baseUrl = http://localhost:3001
+
+###
+GET {{baseUrl}}/api/users
+
+###
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+    "username": "hegde",
+    "password": "top sekret",
+    "name": "Bindu Hegde"
+}
+
+###
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+    "username": "dharma",
+    "password": "sekret",
+    "name": "Dharma Teja Nuli"
+}

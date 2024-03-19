@@ -1,0 +1,36 @@
+@baseUrl = http://localhost:3001
+
+### Blogs
+###
+GET {{baseUrl}}/api/blogs
+
+###
+POST {{baseUrl}}/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRoYXJtYSIsImlkIjoiNjVjZTY4MjBhMmU1NTcwMWVlY2JiNzQyIiwiaWF0IjoxNzA4MDgwOTgyfQ.t7YAVnq8vPGeETz0z4EgZkVTURWGT27650d80VKTGzc
+
+{
+     "title": "TDD harms architecture",
+    "author": "Robert C. Martin",
+    "url": "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    "likes": 0
+}
+
+###
+POST {{baseUrl}}/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlZ2RlIiwiaWQiOiI2NWNlNjgxYWEyZTU1NzAxZWVjYmI3NDAiLCJpYXQiOjE3MDgwODEwMzd9.0WLP50L0rcvIVQnG5tgDDgA_UnPsxTwvqEoS9D7KZA0
+
+{
+    "title": "Go To Statement Considered Harmful",
+    "author": "Edsger W. Dijkstra",
+    "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+    "likes": 5
+}
+
+###
+GET {{baseUrl}}/api/blogs/65ce69dc6569eb59b2aadecc
+
+###
+DELETE {{baseUrl}}/api/blogs/65cf4f4952f5b58398213897
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRoYXJtYSIsImlkIjoiNjVjZTY4MjBhMmU1NTcwMWVlY2JiNzQyIiwiaWF0IjoxNzA4MDgwOTgyfQ.t7YAVnq8vPGeETz0z4EgZkVTURWGT27650d80VKTGzc
