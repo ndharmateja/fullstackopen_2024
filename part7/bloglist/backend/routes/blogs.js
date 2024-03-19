@@ -7,6 +7,7 @@ const {
     updateBlog,
 } = require("../controllers/blogs");
 const mw = require("../utils/middleware");
+const commentsRouter = require("./comments");
 
 // Create blogs router
 const blogsRouter = express.Router();
@@ -20,5 +21,8 @@ blogsRouter
     .get(getOneBlog)
     .put(updateBlog)
     .delete(mw.userExtractor, deleteBlog);
+
+// Route for comments /api/blogs/:id/comments
+blogsRouter.use("/:id/comments", commentsRouter);
 
 module.exports = blogsRouter;
