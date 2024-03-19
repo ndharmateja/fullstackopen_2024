@@ -63,9 +63,11 @@ const Blog = () => {
                     </tr>
                 </tbody>
             </table>
-            <br />
             {loggedInUserName === username && (
-                <button onClick={handleRemoveClick}>remove</button>
+                <>
+                    <br />
+                    <button onClick={handleRemoveClick}>remove</button>
+                </>
             )}
         </div>
     );
