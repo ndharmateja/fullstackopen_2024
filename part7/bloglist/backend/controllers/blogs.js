@@ -3,11 +3,13 @@ const Blog = require("../models/Blog");
 const User = require("../models/User");
 
 const getAllBlogs = async (_req, res) => {
-    const blogs = await Blog.find({}).populate("user", {
-        username: 1,
-        name: 1,
-        id: 1,
-    });
+    const blogs = await Blog.find({})
+        .populate("user", {
+            username: 1,
+            name: 1,
+            id: 1,
+        })
+        .populate("comments", { content: 1, createdAt: 1 });
     return res.json(blogs);
 };
 
@@ -30,11 +32,13 @@ const createBlog = async (req, res) => {
     await user.save();
 
     // retrieve blog and return
-    const fetchedBlog = await Blog.findById(createdBlog).populate("user", {
-        username: 1,
-        name: 1,
-        id: 1,
-    });
+    const fetchedBlog = await Blog.findById(createdBlog.id)
+        .populate("user", {
+            username: 1,
+            name: 1,
+            id: 1,
+        })
+        .populate("comments", { content: 1, createdAt: 1 });
 
     return res.status(201).json(fetchedBlog);
 };
@@ -42,11 +46,13 @@ const createBlog = async (req, res) => {
 const getOneBlog = async (req, res) => {
     const id = req.params.id;
 
-    const blog = await Blog.findById(id).populate("user", {
-        username: 1,
-        name: 1,
-        id: 1,
-    });
+    const blog = await Blog.findById(id)
+        .populate("user", {
+            username: 1,
+            name: 1,
+            id: 1,
+        })
+        .populate("comments", { content: 1, createdAt: 1 });
     if (blog) return res.json(blog);
     else return res.status(404).end();
 };
