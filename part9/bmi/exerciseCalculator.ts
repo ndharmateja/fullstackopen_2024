@@ -31,7 +31,7 @@ interface ExerciseResult {
     average: number;
 }
 
-const calculateExercises = (input: ExerciseInput): ExerciseResult => {
+export const calculateExercises = (input: ExerciseInput): ExerciseResult => {
     const { hours, target } = input;
 
     const hoursSum = hours.reduce((a, b) => a + b);
@@ -52,7 +52,7 @@ const calculateExercises = (input: ExerciseInput): ExerciseResult => {
     };
 };
 
-interface ExerciseInput {
+export interface ExerciseInput {
     hours: number[];
     target: number;
 }
