@@ -1,3 +1,5 @@
+import { printError, validateNumber } from "./utils";
+
 interface BmiInput {
     height: number;
     weight: number;
@@ -7,11 +9,8 @@ const parseArgs = (args: string[]): BmiInput => {
     if (args.length < 4) throw new Error("not enough args");
     if (args.length > 4) throw new Error("too many args");
 
-    const height = Number(args[2]);
-    const weight = Number(args[3]);
-
-    if (isNaN(height) || isNaN(weight))
-        throw new Error("args should be numbers");
+    const height = validateNumber(args[2]);
+    const weight = validateNumber(args[3]);
 
     return { height, weight };
 };
@@ -34,7 +33,5 @@ try {
     const input = parseArgs(process.argv);
     console.log(calculateBmi(input));
 } catch (error) {
-    let errorMessage = "Error";
-    if (error instanceof Error) errorMessage += `: ${error.message}`;
-    console.error(errorMessage);
+    printError(error);
 }
