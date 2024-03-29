@@ -31,9 +31,10 @@ interface ExerciseResult {
     average: number;
 }
 
-export const calculateExercises = (input: ExerciseInput): ExerciseResult => {
-    const { hours, target } = input;
-
+export const calculateExercises = (
+    hours: number[],
+    target: number
+): ExerciseResult => {
     const hoursSum = hours.reduce((a, b) => a + b);
     const periodLength = hours.length;
     const trainingDays = hours.filter((h) => h > 0).length;
@@ -69,8 +70,8 @@ const parseArgs = (args: string[]): ExerciseInput => {
 };
 
 try {
-    const input = parseArgs(process.argv);
-    console.log(calculateExercises(input));
+    const { hours, target } = parseArgs(process.argv);
+    console.log(calculateExercises(hours, target));
 } catch (error) {
     printError(error);
 }
