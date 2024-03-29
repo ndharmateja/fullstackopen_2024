@@ -1,4 +1,4 @@
-export const validateNumber = (numString: string): number => {
+export const validateNumber = (numString: any): number => {
     const val = Number(numString);
     if (isNaN(val)) throw new Error(`${numString} not a number`);
     return val;
