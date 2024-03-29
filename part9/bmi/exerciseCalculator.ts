@@ -60,6 +60,7 @@ interface ExerciseInput {
 const parseArgs = (args: string[]): ExerciseInput => {
     if (args.length < 4) throw new Error("not enough args");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, __, targetString, ...hourStrings] = args;
     const target = validateNumber(targetString);
     const hours = hourStrings.map(validateNumber);
