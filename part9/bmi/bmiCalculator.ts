@@ -15,8 +15,7 @@ const parseArgs = (args: string[]): BmiInput => {
     return { height, weight };
 };
 
-export const calculateBmi = (input: BmiInput): string => {
-    const { height, weight } = input;
+export const calculateBmi = (height: number, weight: number): string => {
     const bmi = weight / ((height / 100) ^ 2);
 
     if (bmi < 16) return "Underweight (Severe thinness)";
@@ -30,8 +29,8 @@ export const calculateBmi = (input: BmiInput): string => {
 };
 
 try {
-    const input = parseArgs(process.argv);
-    console.log(calculateBmi(input));
+    const { height, weight } = parseArgs(process.argv);
+    console.log(calculateBmi(height, weight));
 } catch (error) {
     printError(error);
 }
