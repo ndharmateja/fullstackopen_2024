@@ -1,3 +1,5 @@
+import { printError, validateNumber } from "./utils";
+
 interface Rating {
     rating: number;
     ratingDescription: string;
@@ -29,10 +31,9 @@ interface ExerciseResult {
     average: number;
 }
 
-const calculateExercises = (
-    hours: number[],
-    target: number
-): ExerciseResult => {
+const calculateExercises = (input: ExerciseInput): ExerciseResult => {
+    const { hours, target } = input;
+
     const hoursSum = hours.reduce((a, b) => a + b);
     const periodLength = hours.length;
     const trainingDays = hours.filter((h) => h > 0).length;
@@ -51,4 +52,24 @@ const calculateExercises = (
     };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+interface ExerciseInput {
+    hours: number[];
+    target: number;
+}
+
+const parseArgs = (args: string[]): ExerciseInput => {
+    if (args.length < 4) throw new Error("not enough args");
+
+    const [_, __, targetString, ...hourStrings] = args;
+    const target = validateNumber(targetString);
+    const hours = hourStrings.map(validateNumber);
+
+    return { target, hours };
+};
+
+try {
+    const input = parseArgs(process.argv);
+    console.log(calculateExercises(input));
+} catch (error) {
+    printError(error);
+}
