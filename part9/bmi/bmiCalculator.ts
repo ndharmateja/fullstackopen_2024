@@ -1,6 +1,6 @@
 import { printError, validateNumber } from "./utils";
 
-interface BmiInput {
+export interface BmiInput {
     height: number;
     weight: number;
 }
@@ -15,7 +15,7 @@ const parseArgs = (args: string[]): BmiInput => {
     return { height, weight };
 };
 
-const calculateBmi = (input: BmiInput): string => {
+export const calculateBmi = (input: BmiInput): string => {
     const { height, weight } = input;
     const bmi = weight / ((height / 100) ^ 2);
 
